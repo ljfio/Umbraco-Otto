@@ -7,13 +7,13 @@ using Umbraco.Cms.Core.Services;
 
 namespace Our.Umbraco.Organizers.Core.FolderEngine;
 
-public abstract class FolderEngineBase
+public abstract class OrgnizerEngineBase
 {
     private readonly IContentService _contentService;
     private readonly IMediaService _mediaService;
     private readonly IEntityService _entityService;
 
-    protected FolderEngineBase(
+    protected OrgnizerEngineBase(
         IContentService contentService,
         IMediaService mediaService,
         IEntityService entityService)

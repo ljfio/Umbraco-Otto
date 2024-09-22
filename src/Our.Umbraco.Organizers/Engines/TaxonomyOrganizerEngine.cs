@@ -1,18 +1,17 @@
 // Copyright 2024 Luke Fisher
 // SPDX-License-Identifier: Apache-2.0
 
-using Our.Umbraco.Organizers.Core.FolderEngine;
 using Our.Umbraco.Organizers.Config;
+using Our.Umbraco.Organizers.Core.FolderEngine;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Models.Entities;
 using Umbraco.Cms.Core.Services;
 
-namespace Our.Umbraco.Organizers.FolderEngine;
+namespace Our.Umbraco.Organizers.Engines;
 
-[FolderEngine("Taxonomy")]
-public class TaxonomyFolderEngine : FolderEngineBase, IFolderEngine<TaxonomyFolderEngineRule>
+[OrganizerEngine("Taxonomy")]
+public class TaxonomyOrganizerEngine : OrgnizerEngineBase, IOrganizerEngine<TaxonomyFolderEngineRule>
 {
-    public TaxonomyFolderEngine(
+    public TaxonomyOrganizerEngine(
         IContentService contentService,
         IMediaService mediaService,
         IEntityService entityService) :

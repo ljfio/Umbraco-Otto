@@ -8,6 +8,6 @@ namespace Our.Umbraco.Organizers.Core.Extensions;
 
 public static class UmbracoBuilderExtensions
 {
-    public static FolderEngineCollectionBuilder FolderEngines(this IUmbracoBuilder builder) =>
-        builder.WithCollectionBuilder<FolderEngineCollectionBuilder>();
+    public static OrganizerEngineCollectionBuilder OrganizerEngines(this IUmbracoBuilder builder) =>
+        builder.WithCollectionBuilder<OrganizerEngineCollectionBuilder>();
 }

@@ -7,7 +7,8 @@ using Microsoft.Extensions.Options;
 using Our.Umbraco.Organizers.Core.Config;
 using Our.Umbraco.Organizers.Core.Extensions;
 using Our.Umbraco.Organizers.Config;
-using Our.Umbraco.Organizers.FolderEngine;
+using Our.Umbraco.Organizers.Core;
+using Our.Umbraco.Organizers.Engines;
 using Our.Umbraco.Organizers.Notifications;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
@@ -23,7 +24,7 @@ public class PackageComposer : IComposer
 
         builder.Services.AddSingleton<IConfigureOptions<JsonOptions>, ConfigureJsonOptions>();
 
-        builder.Services.AddSingleton<IFolderEngineDispatcher, FolderEngineDispatcher>();
+        builder.Services.AddSingleton<IOrganizer, Organizer>();
         
         builder
             .AddNotificationHandler<ContentSavedNotification, ContentSavedHandler>()
@@ -33,9 +34,9 @@ public class PackageComposer : IComposer
             .AddNotificationHandler<MediaDeletedNotification, MediaDeletedHandler>()
             .AddNotificationHandler<MediaMovedToRecycleBinNotification, MediaMovedToRecycleBinHandler>();
 
-        builder.FolderEngines()
-            .Add<AlphabeticalFolderEngine>()
-            .Add<DateFolderEngine>()
-            .Add<TaxonomyFolderEngine>();
+        builder.OrganizerEngines()
+            .Add<AlphabeticalOrganizerEngine>()
+            .Add<DateOrganizerEngine>()
+            .Add<TaxonomyOrganizerEngine>();
     }
 }

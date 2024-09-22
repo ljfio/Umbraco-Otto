@@ -1,14 +1,14 @@
 // Copyright 2024 Luke Fisher
 // SPDX-License-Identifier: Apache-2.0
 
-using Our.Umbraco.Organizers.Core.FolderEngine;
 using Our.Umbraco.Organizers.Config;
+using Our.Umbraco.Organizers.Core.FolderEngine;
 using Umbraco.Cms.Core.Models;
 
-namespace Our.Umbraco.Organizers.FolderEngine;
+namespace Our.Umbraco.Organizers.Engines;
 
-[FolderEngine("Alphabetical")]
-public class AlphabeticalFolderEngine : IFolderEngine<AlphabeticalFolderEngineRule>
+[OrganizerEngine("Alphabetical")]
+public class AlphabeticalOrganizerEngine : IOrganizerEngine<AlphabeticalFolderEngineRule>
 {
     public void Organise(AlphabeticalFolderEngineRule rule, IContentBase[] entities)
     {

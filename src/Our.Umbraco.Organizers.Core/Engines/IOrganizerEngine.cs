@@ -6,7 +6,7 @@ using Umbraco.Cms.Core.Models;
 
 namespace Our.Umbraco.Organizers.Core.FolderEngine;
 
-public interface IFolderEngine<in TRule> : IFolderEngine
+public interface IOrganizerEngine<in TRule> : IOrganizerEngine
     where TRule : class, IFolderEngineRule
 {
     /// <summary>
@@ -17,7 +17,7 @@ public interface IFolderEngine<in TRule> : IFolderEngine
     void Organise(TRule rule, IContentBase[] entities);
 
     /// <inheritdoc />
-    void IFolderEngine.Organise(IFolderEngineRule rule, IContentBase[] entities)
+    void IOrganizerEngine.Organise(IFolderEngineRule rule, IContentBase[] entities)
     {
         if (rule is not TRule typedRule)
             throw new ArgumentException($"must be of type {typeof(TRule).Name}", nameof(rule));
@@ -33,7 +33,7 @@ public interface IFolderEngine<in TRule> : IFolderEngine
     void Cleanup(TRule rule, IContentBase[] entities);
 
     /// <inheritdoc />
-    void IFolderEngine.Cleanup(IFolderEngineRule rule, IContentBase[] entities)
+    void IOrganizerEngine.Cleanup(IFolderEngineRule rule, IContentBase[] entities)
     {
         if (rule is not TRule typedRule)
             throw new ArgumentException($"must be of type {typeof(TRule).Name}", nameof(rule));
@@ -42,7 +42,7 @@ public interface IFolderEngine<in TRule> : IFolderEngine
     }
 }
 
-public interface IFolderEngine
+public interface IOrganizerEngine
 {
     /// <summary>
     /// Organise the <paramref name="entities"/> based on the <paramref name="rule"/>

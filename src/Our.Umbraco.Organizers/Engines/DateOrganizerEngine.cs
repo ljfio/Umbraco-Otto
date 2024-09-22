@@ -1,15 +1,14 @@
 // Copyright 2024 Luke Fisher
 // SPDX-License-Identifier: Apache-2.0
 
-using Our.Umbraco.Organizers.Core.FolderEngine;
 using Our.Umbraco.Organizers.Config;
+using Our.Umbraco.Organizers.Core.FolderEngine;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Models.Entities;
 
-namespace Our.Umbraco.Organizers.FolderEngine;
+namespace Our.Umbraco.Organizers.Engines;
 
-[FolderEngine("Date")]
-public class DateFolderEngine : IFolderEngine<DateFolderEngineRule>
+[OrganizerEngine("Date")]
+public class DateOrganizerEngine : IOrganizerEngine<DateFolderEngineRule>
 {
     public void Organise(DateFolderEngineRule rule, IContentBase[] entities)
     {

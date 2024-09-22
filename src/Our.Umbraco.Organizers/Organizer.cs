@@ -1,30 +1,29 @@
 // Copyright 2024 Luke Fisher
 // SPDX-License-Identifier: Apache-2.0
 
-using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Our.Umbraco.Organizers.Core;
 using Our.Umbraco.Organizers.Core.Config;
 using Our.Umbraco.Organizers.Core.FolderEngine;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Models.Entities;
 using Umbraco.Cms.Core.Services;
 
-namespace Our.Umbraco.Organizers.FolderEngine;
+namespace Our.Umbraco.Organizers;
 
-public class FolderEngineDispatcher : IFolderEngineDispatcher
+public class Organizer : IOrganizer
 {
-    private readonly FolderEngineCollection _engineCollection;
+    private readonly OrganizerEngineCollection _engineCollection;
     private readonly IServiceProvider _serviceProvider;
     private readonly IEntityService _entityService;
     private readonly IMediaService _mediaService;
     private readonly IContentService _contentService;
     private readonly IOptions<FolderSettings> _options;
 
-    private readonly IDictionary<string, IFolderEngine> _engines;
+    private readonly IDictionary<string, IOrganizerEngine> _engines;
 
-    public FolderEngineDispatcher(
-        FolderEngineCollection engineCollection,
+    public Organizer(
+        OrganizerEngineCollection engineCollection,
         IServiceProvider serviceProvider,
         IEntityService entityService,
         IOptions<FolderSettings> options, IContentService contentService, IMediaService mediaService)
@@ -36,7 +35,7 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
         _entityService = entityService;
         _serviceProvider = serviceProvider;
 
-        _engines = new Dictionary<string, IFolderEngine>();
+        _engines = new Dictionary<string, IOrganizerEngine>();
     }
 
     public void Organise(IEnumerable<IContentBase> entities)
@@ -113,7 +112,7 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
         IContentBase parent) =>
         rules.FirstOrDefault(rule => rule.Matches(entity, parent));
 
-    private IFolderEngine? GetEngine(string name)
+    private IOrganizerEngine? GetEngine(string name)
     {
         // Search for engine in the cache
         if (_engines.TryGetValue(name, out var cachedEngine))
@@ -126,7 +125,7 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
             return null;
 
         // Activate engine using the service provider
-        var engine = ActivatorUtilities.GetServiceOrCreateInstance(_serviceProvider, engineType) as IFolderEngine;
+        var engine = ActivatorUtilities.GetServiceOrCreateInstance(_serviceProvider, engineType) as IOrganizerEngine;
 
         if (engine is null)
             return null;

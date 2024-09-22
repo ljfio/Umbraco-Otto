@@ -3,9 +3,9 @@
 
 using Umbraco.Cms.Core.Models;
 
-namespace Our.Umbraco.Organizers.FolderEngine;
+namespace Our.Umbraco.Organizers.Core;
 
-public interface IFolderEngineDispatcher
+public interface IOrganizer
 {
     void Organise(IEnumerable<IContentBase> entities);
 

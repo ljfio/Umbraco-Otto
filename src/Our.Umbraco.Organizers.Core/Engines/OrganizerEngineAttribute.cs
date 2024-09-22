@@ -4,9 +4,9 @@
 namespace Our.Umbraco.Organizers.Core.FolderEngine;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-public class FolderEngineAttribute : Attribute
+public class OrganizerEngineAttribute : Attribute
 {
-    public FolderEngineAttribute(string name)
+    public OrganizerEngineAttribute(string name)
     {
         Name = name;
     }
