@@ -1,6 +1,6 @@
 using Umbraco.Cms.Core.Models;
 
-namespace Our.Umbraco.Organizers.Core.Engines;
+namespace Our.Umbraco.Organizers.Core.Services;
 
 public interface IOrganizerService<TEntity>
     where TEntity : class, IContentBase

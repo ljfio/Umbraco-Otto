@@ -1,7 +1,9 @@
+using Our.Umbraco.Organizers.Core.Engines;
+using Our.Umbraco.Organizers.Core.Services;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 
-namespace Our.Umbraco.Organizers.Core.Engines;
+namespace Our.Umbraco.Organizers.Services;
 
 public class ContentOrganizerService : IOrganizerService<IContent>
 {
