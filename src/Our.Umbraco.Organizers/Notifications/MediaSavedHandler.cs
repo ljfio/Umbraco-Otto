@@ -13,5 +13,5 @@ public class MediaSavedHandler : INotificationHandler<MediaSavedNotification>
 
     public MediaSavedHandler(IOrganizer dispatcher) => _dispatcher = dispatcher;
 
-    public void Handle(MediaSavedNotification notification) => _dispatcher.Organise(notification.SavedEntities);
+    public void Handle(MediaSavedNotification notification) => _dispatcher.Organize(notification.SavedEntities);
 }

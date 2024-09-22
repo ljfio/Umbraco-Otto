@@ -38,7 +38,7 @@ public class Organizer : IOrganizer
         _engines = new Dictionary<string, IOrganizerEngine>();
     }
 
-    public void Organise(IEnumerable<IContentBase> entities)
+    public void Organize(IEnumerable<IContentBase> entities)
     {
         var ruleGroups = entities
             .GroupBy(FindMatchingRule)
@@ -56,7 +56,7 @@ public class Organizer : IOrganizer
             if (engine is null)
                 continue;
 
-            engine.Organise(rule, grouping.ToArray());
+            engine.Organize(rule, grouping.ToArray());
         }
     }
 

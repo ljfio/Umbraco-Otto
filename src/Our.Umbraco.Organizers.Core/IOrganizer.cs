@@ -7,7 +7,7 @@ namespace Our.Umbraco.Organizers.Core;
 
 public interface IOrganizer
 {
-    void Organise(IEnumerable<IContentBase> entities);
+    void Organize(IEnumerable<IContentBase> entities);
 
     void Cleanup(IEnumerable<IContentBase> entities);
 }

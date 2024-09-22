@@ -10,7 +10,7 @@ namespace Our.Umbraco.Organizers.Engines;
 [OrganizerEngine("Alphabetical")]
 public class AlphabeticalOrganizerEngine : IOrganizerEngine<AlphabeticalFolderEngineRule>
 {
-    public void Organise(AlphabeticalFolderEngineRule rule, IContentBase[] entities)
+    public void Organize(AlphabeticalFolderEngineRule rule, IContentBase[] entities)
     {
         throw new NotImplementedException();
     }

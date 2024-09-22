@@ -10,7 +10,7 @@ namespace Our.Umbraco.Organizers.Engines;
 [OrganizerEngine("Date")]
 public class DateOrganizerEngine : IOrganizerEngine<DateFolderEngineRule>
 {
-    public void Organise(DateFolderEngineRule rule, IContentBase[] entities)
+    public void Organize(DateFolderEngineRule rule, IContentBase[] entities)
     {
         throw new NotImplementedException();
     }

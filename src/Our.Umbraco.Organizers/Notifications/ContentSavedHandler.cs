@@ -13,5 +13,5 @@ public class ContentSavedHandler : INotificationHandler<ContentSavedNotification
 
     public ContentSavedHandler(IOrganizer dispatcher) => _dispatcher = dispatcher;
 
-    public void Handle(ContentSavedNotification notification) => _dispatcher.Organise(notification.SavedEntities);
+    public void Handle(ContentSavedNotification notification) => _dispatcher.Organize(notification.SavedEntities);
 }

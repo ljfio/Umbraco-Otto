@@ -14,15 +14,15 @@ public interface IOrganizerEngine<in TRule> : IOrganizerEngine
     /// </summary>
     /// <param name="rule"></param>
     /// <param name="entities"></param>
-    void Organise(TRule rule, IContentBase[] entities);
+    void Organize(TRule rule, IContentBase[] entities);
 
     /// <inheritdoc />
-    void IOrganizerEngine.Organise(IFolderEngineRule rule, IContentBase[] entities)
+    void IOrganizerEngine.Organize(IFolderEngineRule rule, IContentBase[] entities)
     {
         if (rule is not TRule typedRule)
             throw new ArgumentException($"must be of type {typeof(TRule).Name}", nameof(rule));
         
-        Organise(typedRule, entities);
+        Organize(typedRule, entities);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public interface IOrganizerEngine
     /// </summary>
     /// <param name="rule"></param>
     /// <param name="entities"></param>
-    void Organise(IFolderEngineRule rule, IContentBase[] entities);
+    void Organize(IFolderEngineRule rule, IContentBase[] entities);
 
     /// <summary>
     /// Cleanup the folders linked to the <paramref name="entities"/> based on the <paramref name="rule"/>

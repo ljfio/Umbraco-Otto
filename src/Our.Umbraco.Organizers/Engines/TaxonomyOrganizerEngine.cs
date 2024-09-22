@@ -22,7 +22,7 @@ public class TaxonomyOrganizerEngine : OrgnizerEngineBase, IOrganizerEngine<Taxo
     {
     }
 
-    public void Organise(TaxonomyFolderEngineRule rule, IContentBase[] entities)
+    public void Organize(TaxonomyFolderEngineRule rule, IContentBase[] entities)
     {
         foreach (var entity in entities)
         {
