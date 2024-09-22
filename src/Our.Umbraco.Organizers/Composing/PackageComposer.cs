@@ -8,8 +8,10 @@ using Our.Umbraco.Organizers.Core.Config;
 using Our.Umbraco.Organizers.Core.Extensions;
 using Our.Umbraco.Organizers.Config;
 using Our.Umbraco.Organizers.Core;
+using Our.Umbraco.Organizers.Core.Services;
 using Our.Umbraco.Organizers.Engines;
 using Our.Umbraco.Organizers.Notifications;
+using Our.Umbraco.Organizers.Services;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models;
@@ -26,6 +28,8 @@ public class PackageComposer : IComposer
         builder.Services.AddSingleton<IConfigureOptions<JsonOptions>, ConfigureJsonOptions>();
 
         builder.Services
+            .AddSingleton<IOrganizerService<IContent>, ContentOrganizerService>()
+            .AddSingleton<IOrganizerService<IMedia>, MediaOrganizerService>()
             .AddSingleton<IOrganizer<IMedia>, MediaOrganizer>()
             .AddSingleton<IOrganizer<IContent>, ContentOrganizer>();
         
