@@ -15,7 +15,7 @@ public class MediaOrganizer : OrganizerBase<IMedia>
     private readonly IOptions<OrganizerSettings> _options;
 
     public MediaOrganizer(
-        OrganizerEngineCollection engineCollection,
+        OrganizerEngineCollection<IMedia> engineCollection,
         IServiceProvider serviceProvider,
         IMediaService mediaService,
         IOptions<OrganizerSettings> options) :

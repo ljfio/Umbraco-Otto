@@ -12,19 +12,19 @@ namespace Our.Umbraco.Organizers;
 public abstract class OrganizerBase<TEntity> : IOrganizer<TEntity>
     where TEntity : class, IContentBase
 {
-    private readonly OrganizerEngineCollection _engineCollection;
+    private readonly OrganizerEngineCollection<TEntity> _engineCollection;
     private readonly IServiceProvider _serviceProvider;
 
-    private readonly IDictionary<string, IOrganizerEngine> _engines;
+    private readonly IDictionary<string, IOrganizerEngine<TEntity>> _engines;
 
     public OrganizerBase(
-        OrganizerEngineCollection engineCollection,
+        OrganizerEngineCollection<TEntity> engineCollection,
         IServiceProvider serviceProvider)
     {
         _engineCollection = engineCollection;
         _serviceProvider = serviceProvider;
 
-        _engines = new Dictionary<string, IOrganizerEngine>();
+        _engines = new Dictionary<string, IOrganizerEngine<TEntity>>();
     }
 
     public void Organize(IEnumerable<TEntity> entities)
@@ -91,7 +91,7 @@ public abstract class OrganizerBase<TEntity> : IOrganizer<TEntity>
         IContentBase parent) =>
         rules.FirstOrDefault(rule => rule.Matches(entity, parent));
 
-    private IOrganizerEngine? GetEngine(string name)
+    private IOrganizerEngine<TEntity>? GetEngine(string name)
     {
         // Search for engine in the cache
         if (_engines.TryGetValue(name, out var cachedEngine))
@@ -104,7 +104,7 @@ public abstract class OrganizerBase<TEntity> : IOrganizer<TEntity>
             return null;
 
         // Activate engine using the service provider
-        var engine = ActivatorUtilities.GetServiceOrCreateInstance(_serviceProvider, engineType) as IOrganizerEngine;
+        var engine = ActivatorUtilities.GetServiceOrCreateInstance(_serviceProvider, engineType) as IOrganizerEngine<TEntity>;
 
         if (engine is null)
             return null;

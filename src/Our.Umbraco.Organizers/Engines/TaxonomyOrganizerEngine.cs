@@ -4,30 +4,25 @@
 using Our.Umbraco.Organizers.Config;
 using Our.Umbraco.Organizers.Core.Engines;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Services;
 
 namespace Our.Umbraco.Organizers.Engines;
 
-[OrganizerEngine("Taxonomy")]
-public class TaxonomyOrganizerEngine : OrgnizerEngineBase, IOrganizerEngine<TaxonomyOrganizerEngineRule>
+public abstract class TaxonomyOrganizerEngine<TEntity> : IOrganizerEngine<TaxonomyOrganizerEngineRule, TEntity>
+    where TEntity : class, IContentBase
 {
-    public TaxonomyOrganizerEngine(
-        IContentService contentService,
-        IMediaService mediaService,
-        IEntityService entityService) :
-        base(
-            contentService,
-            mediaService,
-            entityService)
+    private readonly IOrganizerService<TEntity> _organizerService;
+
+    protected TaxonomyOrganizerEngine(IOrganizerService<TEntity> organizerService)
     {
+        _organizerService = organizerService;
     }
 
-    public void Organize(TaxonomyOrganizerEngineRule rule, IContentBase[] entities)
+    public void Organize(TaxonomyOrganizerEngineRule rule, TEntity[] entities)
     {
         foreach (var entity in entities)
         {
             // Get all folders
-            var folders = GetFolders(rule.FolderType, entity.ParentId, entity is IMedia);
+            var folders = _organizerService.GetFolders(entity.ParentId, rule.FolderType);
 
             // Get the tag from the entity using the property alias
             var tag = entity.HasProperty(rule.PropertyAlias) ? entity.GetValue(rule.PropertyAlias)?.ToString() : null;
@@ -45,23 +40,23 @@ public class TaxonomyOrganizerEngine : OrgnizerEngineBase, IOrganizerEngine<Taxo
             else
             {
                 // Create the folder if it does not exist
-                var folder = CreateFolder(rule.FolderType, entity.ParentId, tag, entity is IMedia);
+                var folder = _organizerService.CreateFolder(tag, entity.ParentId, rule.FolderType);
 
-                Save(folder, entity is IContent { Published: true });
+                _organizerService.Save(folder);
 
                 entity.SetParent(folder);
             }
 
-            Save(entity);
+            _organizerService.Save(entity);
         }
     }
 
-    public void Cleanup(TaxonomyOrganizerEngineRule rule, IContentBase[] entities)
+    public void Cleanup(TaxonomyOrganizerEngineRule rule, TEntity[] entities)
     {
         foreach (var entity in entities)
         {
             // Get all folders
-            var folders = GetFolders(rule.FolderType, entity.ParentId, entity is IMedia);
+            var folders = _organizerService.GetFolders(entity.ParentId, rule.FolderType);
 
             var tag = entity.HasProperty(rule.PropertyAlias) ? entity.GetValue(rule.PropertyAlias)?.ToString() : null;
 
@@ -71,8 +66,8 @@ public class TaxonomyOrganizerEngine : OrgnizerEngineBase, IOrganizerEngine<Taxo
             var matching = folders.FirstOrDefault(folder => tag.Equals(folder.Name));
 
             // If the folder exists and there is no children, delete the folder
-            if (matching is not null && !HasChildren(matching.Id, matching is IMedia))
-                Delete(matching);
+            if (matching is not null && !_organizerService.HasChildren(matching.Id))
+                _organizerService.Delete(matching);
         }
     }
 }

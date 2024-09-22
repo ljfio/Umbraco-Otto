@@ -3,11 +3,13 @@
 
 using System.Reflection;
 using Umbraco.Cms.Core.Composing;
+using Umbraco.Cms.Core.Models;
 using Umbraco.Extensions;
 
 namespace Our.Umbraco.Organizers.Core.Engines;
 
-public class OrganizerEngineCollection : BuilderCollectionBase<Type>
+public class OrganizerEngineCollection<TEntity> : BuilderCollectionBase<Type>
+    where TEntity : class, IContentBase
 {
     public OrganizerEngineCollection(Func<IEnumerable<Type>> items) : base(items)
     {

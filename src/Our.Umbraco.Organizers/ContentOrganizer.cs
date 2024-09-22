@@ -15,7 +15,7 @@ public class ContentOrganizer : OrganizerBase<IContent>
     private readonly IOptions<OrganizerSettings> _options;
 
     public ContentOrganizer(
-        OrganizerEngineCollection engineCollection,
+        OrganizerEngineCollection<IContent> engineCollection,
         IServiceProvider serviceProvider,
         IContentService contentService,
         IOptions<OrganizerSettings> options) :
