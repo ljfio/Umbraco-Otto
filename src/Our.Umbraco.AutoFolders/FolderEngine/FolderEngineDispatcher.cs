@@ -34,7 +34,7 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
         _engines = new Dictionary<string, IFolderEngine>();
     }
 
-    public void Organise(IContentBase[] entities)
+    public void Organise(IEnumerable<IContentBase> entities)
     {
         var ruleGroups = entities.GroupBy(FindMatchingRule);
 
@@ -54,7 +54,7 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
         }
     }
 
-    public void Cleanup(IContentBase[] entities)
+    public void Cleanup(IEnumerable<IContentBase> entities)
     {
         var ruleGroups = entities.GroupBy(FindMatchingRule);
 

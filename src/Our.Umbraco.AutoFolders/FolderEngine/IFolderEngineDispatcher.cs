@@ -7,6 +7,7 @@ namespace Our.Umbraco.AutoFolders.FolderEngine;
 
 public interface IFolderEngineDispatcher
 {
-    void Organise(IContentBase[] entities);
-    void Cleanup(IContentBase[] entities);
+    void Organise(IEnumerable<IContentBase> entities);
+
+    void Cleanup(IEnumerable<IContentBase> entities);
 }
