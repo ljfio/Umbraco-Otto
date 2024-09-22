@@ -1,4 +1,4 @@
-// Copyright 2023 Luke Fisher
+// Copyright 2024 Luke Fisher
 // SPDX-License-Identifier: Apache-2.0
 
 using Microsoft.Extensions.DependencyInjection;
