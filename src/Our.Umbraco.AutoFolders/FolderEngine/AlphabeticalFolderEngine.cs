@@ -3,18 +3,19 @@
 
 using Our.Umbraco.AutoFolders.Config;
 using Our.Umbraco.AutoFolders.Core.FolderEngine;
+using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Entities;
 
 namespace Our.Umbraco.AutoFolders.FolderEngine;
 
 public class AlphabeticalFolderEngine : IFolderEngine<AlphabeticalFolderEngineRule>
 {
-    public void Organise(AlphabeticalFolderEngineRule rule, IUmbracoEntity[] entities)
+    public void Organise(AlphabeticalFolderEngineRule rule, IContentBase[] entities)
     {
         throw new NotImplementedException();
     }
 
-    public void Cleanup(AlphabeticalFolderEngineRule rule, IUmbracoEntity[] entities)
+    public void Cleanup(AlphabeticalFolderEngineRule rule, IContentBase[] entities)
     {
         throw new NotImplementedException();
     }
