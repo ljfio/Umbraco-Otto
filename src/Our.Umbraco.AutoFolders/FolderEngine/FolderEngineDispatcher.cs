@@ -1,6 +1,7 @@
 // Copyright 2024 Luke Fisher
 // SPDX-License-Identifier: Apache-2.0
 
+using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Our.Umbraco.AutoFolders.Core.Config;
@@ -16,6 +17,8 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
     private readonly FolderEngineCollection _engineCollection;
     private readonly IServiceProvider _serviceProvider;
     private readonly IEntityService _entityService;
+    private readonly IMediaService _mediaService;
+    private readonly IContentService _contentService;
     private readonly IOptions<FolderSettings> _options;
 
     private readonly IDictionary<string, IFolderEngine> _engines;
@@ -24,10 +27,12 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
         FolderEngineCollection engineCollection,
         IServiceProvider serviceProvider,
         IEntityService entityService,
-        IOptions<FolderSettings> options)
+        IOptions<FolderSettings> options, IContentService contentService, IMediaService mediaService)
     {
         _engineCollection = engineCollection;
         _options = options;
+        _contentService = contentService;
+        _mediaService = mediaService;
         _entityService = entityService;
         _serviceProvider = serviceProvider;
 
@@ -81,12 +86,12 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
         string itemType = entity.ContentType.Alias;
 
         // Locate the parent and its type
-        var parent = _entityService.Get(entity.ParentId) as IContentEntitySlim;
+        var parent = GetParent(entity);
 
         if (parent is null)
             return null;
 
-        string parentType = parent.ContentTypeAlias;
+        string parentType = parent.ContentType.Alias;
 
         // Find the matching rule for either content or media
         if (entity is IContent)
@@ -97,6 +102,12 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
 
         return null;
     }
+
+    private IContentBase? GetParent(IContentBase entity) => entity switch
+    {
+        IMedia media => _mediaService.GetParent(media),
+        IContent content => _contentService.GetParent(content),
+    };
 
     private IFolderEngineRule? FindMatchingRule(
         IEnumerable<IFolderEngineRule> rules,

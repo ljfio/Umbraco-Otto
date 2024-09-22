@@ -11,6 +11,6 @@ public interface IFolderEngineRule
     IEnumerable<string> ParentTypes { get; }
     
     IEnumerable<string> ItemTypes { get; }
-    
+
     string FolderType { get; }
 }

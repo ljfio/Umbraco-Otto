@@ -27,11 +27,12 @@ public abstract class FolderEngineBase
     /// Saves the item using the correct service
     /// </summary>
     /// <param name="entity"></param>
-    protected void Save(IEntity entity)
+    /// <param name="publish"></param>
+    protected void Save(IEntity entity, bool publish = false)
     {
         if (entity is IContent content)
         {
-            if (content.Published)
+            if (content.Published || publish)
                 _contentService.SaveAndPublish(content);
             else
                 _contentService.Save(content);
@@ -75,12 +76,15 @@ public abstract class FolderEngineBase
     /// </summary>
     /// <param name="folderType"></param>
     /// <param name="parentId"></param>
+    /// <param name="isMedia"></param>
     /// <returns></returns>
-    protected IEntitySlim[] GetFolders(string folderType, int parentId) =>
-        _entityService.GetChildren(parentId)
-            .OfType<IContentEntitySlim>()
-            .Where(e => e.ContentTypeAlias.Equals(folderType))
-            .ToArray<IEntitySlim>();
+    protected IEnumerable<IContentBase> GetFolders(string folderType, int parentId, bool isMedia)
+    {
+        if (isMedia)
+            return _mediaService.GetPagedChildren(parentId, 0, 100, out _);
+
+        return _contentService.GetPagedChildren(parentId, 0, 100, out _);
+    }
 
     /// <summary>
     /// Checks if the item has children
