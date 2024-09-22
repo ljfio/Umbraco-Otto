@@ -7,5 +7,5 @@ namespace Our.Umbraco.AutoFolders.Core.FolderEngine;
 
 public class FolderEngineCollectionBuilder : TypeCollectionBuilderBase<FolderEngineCollectionBuilder, FolderEngineCollection, IFolderEngine>
 {
-    protected override FolderEngineCollectionBuilder This { get; }
+    protected override FolderEngineCollectionBuilder This => this;
 }

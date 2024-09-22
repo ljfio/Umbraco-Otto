@@ -12,7 +12,7 @@ public class FolderEngineCollection : BuilderCollectionBase<Type>
     public FolderEngineCollection(Func<IEnumerable<Type>> items) : base(items)
     {
     }
-    
+
     public Type? FindEngineType(string name) => this
         .FirstOrDefault(type => type.HasCustomAttribute<FolderEngineAttribute>(false) &&
                                 type.GetCustomAttribute<FolderEngineAttribute>()?.Name == name);
