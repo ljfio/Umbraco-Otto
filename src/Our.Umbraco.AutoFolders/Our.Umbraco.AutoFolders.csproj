@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ContentTargetFolders>.</ContentTargetFolders>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Our.Umbraco.AutoFolders</PackageId>
+    <Product>Our.Umbraco.AutoFolders</Product>
+    <Title>Our.Umbraco.AutoFolders</Title>
+    <Description>Auto Folder Package for Umbraco</Description>
+    <PackageTags>umbraco plugin package</PackageTags>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="13.5.1" />
+    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Our.Umbraco.AutoFolders.Core\Our.Umbraco.AutoFolders.Core.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,21 @@
+// Copyright 2023 Luke Fisher
+// SPDX-License-Identifier: Apache-2.0
+
+using Our.Umbraco.AutoFolders.Config;
+using Our.Umbraco.AutoFolders.Core.FolderEngine;
+using Umbraco.Cms.Core.Models.Entities;
+
+namespace Our.Umbraco.AutoFolders.FolderEngine;
+
+public class DateFolderEngine : IFolderEngine<DateFolderEngineRule>
+{
+    public void Organise(DateFolderEngineRule rule, IUmbracoEntity[] entities)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Cleanup(DateFolderEngineRule rule, IUmbracoEntity[] entities)
+    {
+        throw new NotImplementedException();
+    }
+}

@@ -1,0 +1,24 @@
+// Copyright 2023 Luke Fisher
+// SPDX-License-Identifier: Apache-2.0
+
+using Our.Umbraco.AutoFolders.Core.Config;
+using Umbraco.Cms.Core.Models.Entities;
+
+namespace Our.Umbraco.AutoFolders.Core.FolderEngine;
+
+public interface IFolderEngine<in TRule> where TRule : IFolderEngineRule
+{
+    /// <summary>
+    /// Organise the <paramref name="entities"/> based on the <paramref name="rule"/>
+    /// </summary>
+    /// <param name="rule"></param>
+    /// <param name="entities"></param>
+    void Organise(TRule rule, IUmbracoEntity[] entities);
+    
+    /// <summary>
+    /// Cleanup the folders linked to the <paramref name="entities"/> based on the <paramref name="rule"/>
+    /// </summary>
+    /// <param name="rule"></param>
+    /// <param name="entities"></param>
+    void Cleanup(TRule rule, IUmbracoEntity[] entities);
+}
