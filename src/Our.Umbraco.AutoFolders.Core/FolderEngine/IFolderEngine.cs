@@ -7,7 +7,8 @@ using Umbraco.Cms.Core.Models.Entities;
 
 namespace Our.Umbraco.AutoFolders.Core.FolderEngine;
 
-public interface IFolderEngine<in TRule> where TRule : IFolderEngineRule
+public interface IFolderEngine<in TRule>
+    where TRule : IFolderEngineRule
 {
     /// <summary>
     /// Organise the <paramref name="entities"/> based on the <paramref name="rule"/>
@@ -23,3 +24,5 @@ public interface IFolderEngine<in TRule> where TRule : IFolderEngineRule
     /// <param name="entities"></param>
     void Cleanup(TRule rule, IContentBase[] entities);
 }
+
+public interface IFolderEngine : IFolderEngine<IFolderEngineRule>;
