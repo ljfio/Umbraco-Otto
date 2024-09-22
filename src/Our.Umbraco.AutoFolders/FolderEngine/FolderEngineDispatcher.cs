@@ -41,7 +41,9 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
 
     public void Organise(IEnumerable<IContentBase> entities)
     {
-        var ruleGroups = entities.GroupBy(FindMatchingRule);
+        var ruleGroups = entities
+            .GroupBy(FindMatchingRule)
+            .Where(group => group.Key is not null);
 
         foreach (var grouping in ruleGroups)
         {
