@@ -9,10 +9,10 @@ namespace Our.Umbraco.Organizers.Notifications;
 
 public class ContentMovedToRecycleBinHandler : INotificationHandler<ContentMovedToRecycleBinNotification>
 {
-    private readonly IOrganizer _dispatcher;
+    private readonly IOrganizer _organizer;
 
-    public ContentMovedToRecycleBinHandler(IOrganizer dispatcher) => _dispatcher = dispatcher;
+    public ContentMovedToRecycleBinHandler(IOrganizer organizer) => _organizer = organizer;
 
     public void Handle(ContentMovedToRecycleBinNotification notification) =>
-        _dispatcher.Cleanup(notification.MoveInfoCollection.Select(e => e.Entity).ToArray());
+        _organizer.Cleanup(notification.MoveInfoCollection.Select(e => e.Entity).ToArray());
 }

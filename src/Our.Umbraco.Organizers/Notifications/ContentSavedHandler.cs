@@ -9,9 +9,9 @@ namespace Our.Umbraco.Organizers.Notifications;
 
 public class ContentSavedHandler : INotificationHandler<ContentSavedNotification>
 {
-    private readonly IOrganizer _dispatcher;
+    private readonly IOrganizer _organizer;
 
-    public ContentSavedHandler(IOrganizer dispatcher) => _dispatcher = dispatcher;
+    public ContentSavedHandler(IOrganizer organizer) => _organizer = organizer;
 
-    public void Handle(ContentSavedNotification notification) => _dispatcher.Organize(notification.SavedEntities);
+    public void Handle(ContentSavedNotification notification) => _organizer.Organize(notification.SavedEntities);
 }

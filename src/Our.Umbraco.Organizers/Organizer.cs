@@ -18,7 +18,7 @@ public class Organizer : IOrganizer
     private readonly IEntityService _entityService;
     private readonly IMediaService _mediaService;
     private readonly IContentService _contentService;
-    private readonly IOptions<FolderSettings> _options;
+    private readonly IOptions<OrganizerSettings> _options;
 
     private readonly IDictionary<string, IOrganizerEngine> _engines;
 
@@ -26,7 +26,7 @@ public class Organizer : IOrganizer
         OrganizerEngineCollection engineCollection,
         IServiceProvider serviceProvider,
         IEntityService entityService,
-        IOptions<FolderSettings> options, IContentService contentService, IMediaService mediaService)
+        IOptions<OrganizerSettings> options, IContentService contentService, IMediaService mediaService)
     {
         _engineCollection = engineCollection;
         _options = options;
@@ -80,7 +80,7 @@ public class Organizer : IOrganizer
         }
     }
 
-    private IFolderEngineRule? FindMatchingRule(IContentBase entity)
+    private IOrganizerEngineRule? FindMatchingRule(IContentBase entity)
     {
         var settings = _options.Value;
 
@@ -106,8 +106,8 @@ public class Organizer : IOrganizer
         IContent content => _contentService.GetParent(content),
     };
 
-    private IFolderEngineRule? FindMatchingRule(
-        IEnumerable<IFolderEngineRule> rules,
+    private IOrganizerEngineRule? FindMatchingRule(
+        IEnumerable<IOrganizerEngineRule> rules,
         IContentBase entity,
         IContentBase parent) =>
         rules.FirstOrDefault(rule => rule.Matches(entity, parent));

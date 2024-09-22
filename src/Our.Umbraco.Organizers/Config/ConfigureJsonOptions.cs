@@ -15,7 +15,7 @@ public class ConfigureJsonOptions : IConfigureOptions<JsonOptions>
         options.JsonSerializerOptions.TypeInfoResolver?
             .WithAddedModifier(static info =>
             {
-                if (info.Type != typeof(IFolderEngineRule))
+                if (info.Type != typeof(IOrganizerEngineRule))
                     return;
 
                 // TODO Dynamic polymorphic types
@@ -24,9 +24,9 @@ public class ConfigureJsonOptions : IConfigureOptions<JsonOptions>
                     TypeDiscriminatorPropertyName = "Engine",
                     DerivedTypes =
                     {
-                        new(typeof(AlphabeticalFolderEngineRule), "Alphabetical"),
-                        new(typeof(DateFolderEngineRule), "Date"),
-                        new(typeof(TaxonomyFolderEngineRule), "Taxonomy"),
+                        new(typeof(AlphabeticalOrganizerEngineRule), "Alphabetical"),
+                        new(typeof(DateOrganizerEngineRule), "Date"),
+                        new(typeof(TaxonomyOrganizerEngineRule), "Taxonomy"),
                     }
                 };
             });

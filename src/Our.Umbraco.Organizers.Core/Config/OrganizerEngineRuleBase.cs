@@ -2,7 +2,7 @@ using Umbraco.Cms.Core.Models;
 
 namespace Our.Umbraco.Organizers.Core.Config;
 
-public abstract class FolderEngineRuleBase : IFolderEngineRule
+public abstract class OrganizerEngineRuleBase : IOrganizerEngineRule
 {
     public string Engine { get; set; } = string.Empty;
 

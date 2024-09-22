@@ -8,14 +8,14 @@ using Umbraco.Cms.Core.Models;
 namespace Our.Umbraco.Organizers.Engines;
 
 [OrganizerEngine("Date")]
-public class DateOrganizerEngine : IOrganizerEngine<DateFolderEngineRule>
+public class DateOrganizerEngine : IOrganizerEngine<DateOrganizerEngineRule>
 {
-    public void Organize(DateFolderEngineRule rule, IContentBase[] entities)
+    public void Organize(DateOrganizerEngineRule rule, IContentBase[] entities)
     {
         throw new NotImplementedException();
     }
 
-    public void Cleanup(DateFolderEngineRule rule, IContentBase[] entities)
+    public void Cleanup(DateOrganizerEngineRule rule, IContentBase[] entities)
     {
         throw new NotImplementedException();
     }

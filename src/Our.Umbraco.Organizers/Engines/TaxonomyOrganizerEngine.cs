@@ -9,7 +9,7 @@ using Umbraco.Cms.Core.Services;
 namespace Our.Umbraco.Organizers.Engines;
 
 [OrganizerEngine("Taxonomy")]
-public class TaxonomyOrganizerEngine : OrgnizerEngineBase, IOrganizerEngine<TaxonomyFolderEngineRule>
+public class TaxonomyOrganizerEngine : OrgnizerEngineBase, IOrganizerEngine<TaxonomyOrganizerEngineRule>
 {
     public TaxonomyOrganizerEngine(
         IContentService contentService,
@@ -22,7 +22,7 @@ public class TaxonomyOrganizerEngine : OrgnizerEngineBase, IOrganizerEngine<Taxo
     {
     }
 
-    public void Organize(TaxonomyFolderEngineRule rule, IContentBase[] entities)
+    public void Organize(TaxonomyOrganizerEngineRule rule, IContentBase[] entities)
     {
         foreach (var entity in entities)
         {
@@ -56,7 +56,7 @@ public class TaxonomyOrganizerEngine : OrgnizerEngineBase, IOrganizerEngine<Taxo
         }
     }
 
-    public void Cleanup(TaxonomyFolderEngineRule rule, IContentBase[] entities)
+    public void Cleanup(TaxonomyOrganizerEngineRule rule, IContentBase[] entities)
     {
         foreach (var entity in entities)
         {

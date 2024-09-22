@@ -9,9 +9,9 @@ namespace Our.Umbraco.Organizers.Notifications;
 
 public class ContentDeletedHandler : INotificationHandler<ContentDeletedNotification>
 {
-    private readonly IOrganizer _dispatcher;
+    private readonly IOrganizer _organizer;
 
-    public ContentDeletedHandler(IOrganizer dispatcher) => _dispatcher = dispatcher;
+    public ContentDeletedHandler(IOrganizer organizer) => _organizer = organizer;
 
-    public void Handle(ContentDeletedNotification notification) => _dispatcher.Cleanup(notification.DeletedEntities);
+    public void Handle(ContentDeletedNotification notification) => _organizer.Cleanup(notification.DeletedEntities);
 }

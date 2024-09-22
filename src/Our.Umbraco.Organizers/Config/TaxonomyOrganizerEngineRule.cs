@@ -5,4 +5,4 @@ using Our.Umbraco.Organizers.Core.Config;
 
 namespace Our.Umbraco.Organizers.Config;
 
-public class TaxonomyFolderEngineRule : FolderEngineRuleBase;
+public class TaxonomyOrganizerEngineRule : OrganizerEngineRuleBase;

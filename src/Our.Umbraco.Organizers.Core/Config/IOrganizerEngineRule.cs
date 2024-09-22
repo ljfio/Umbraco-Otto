@@ -2,7 +2,7 @@ using Umbraco.Cms.Core.Models;
 
 namespace Our.Umbraco.Organizers.Core.Config;
 
-public interface IFolderEngineRule
+public interface IOrganizerEngineRule
 {
     string Engine { get; }
     

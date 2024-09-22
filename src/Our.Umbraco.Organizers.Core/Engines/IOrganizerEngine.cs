@@ -7,7 +7,7 @@ using Umbraco.Cms.Core.Models;
 namespace Our.Umbraco.Organizers.Core.Engines;
 
 public interface IOrganizerEngine<in TRule> : IOrganizerEngine
-    where TRule : class, IFolderEngineRule
+    where TRule : class, IOrganizerEngineRule
 {
     /// <summary>
     /// Organise the <paramref name="entities"/> based on the <paramref name="rule"/>
@@ -17,7 +17,7 @@ public interface IOrganizerEngine<in TRule> : IOrganizerEngine
     void Organize(TRule rule, IContentBase[] entities);
 
     /// <inheritdoc />
-    void IOrganizerEngine.Organize(IFolderEngineRule rule, IContentBase[] entities)
+    void IOrganizerEngine.Organize(IOrganizerEngineRule rule, IContentBase[] entities)
     {
         if (rule is not TRule typedRule)
             throw new ArgumentException($"must be of type {typeof(TRule).Name}", nameof(rule));
@@ -33,7 +33,7 @@ public interface IOrganizerEngine<in TRule> : IOrganizerEngine
     void Cleanup(TRule rule, IContentBase[] entities);
 
     /// <inheritdoc />
-    void IOrganizerEngine.Cleanup(IFolderEngineRule rule, IContentBase[] entities)
+    void IOrganizerEngine.Cleanup(IOrganizerEngineRule rule, IContentBase[] entities)
     {
         if (rule is not TRule typedRule)
             throw new ArgumentException($"must be of type {typeof(TRule).Name}", nameof(rule));
@@ -49,12 +49,12 @@ public interface IOrganizerEngine
     /// </summary>
     /// <param name="rule"></param>
     /// <param name="entities"></param>
-    void Organize(IFolderEngineRule rule, IContentBase[] entities);
+    void Organize(IOrganizerEngineRule rule, IContentBase[] entities);
 
     /// <summary>
     /// Cleanup the folders linked to the <paramref name="entities"/> based on the <paramref name="rule"/>
     /// </summary>
     /// <param name="rule"></param>
     /// <param name="entities"></param>
-    void Cleanup(IFolderEngineRule rule, IContentBase[] entities);
+    void Cleanup(IOrganizerEngineRule rule, IContentBase[] entities);
 }

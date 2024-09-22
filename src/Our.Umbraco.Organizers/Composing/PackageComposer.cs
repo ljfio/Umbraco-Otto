@@ -20,7 +20,7 @@ public class PackageComposer : IComposer
 {
     public void Compose(IUmbracoBuilder builder)
     {
-        builder.Services.Configure<FolderSettings>(builder.Config.GetSection(PackageConstants.PackageName));
+        builder.Services.Configure<OrganizerSettings>(builder.Config.GetSection(PackageConstants.PackageName));
 
         builder.Services.AddSingleton<IConfigureOptions<JsonOptions>, ConfigureJsonOptions>();
 

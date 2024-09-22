@@ -9,9 +9,9 @@ namespace Our.Umbraco.Organizers.Notifications;
 
 public class MediaSavedHandler : INotificationHandler<MediaSavedNotification>
 {
-    private readonly IOrganizer _dispatcher;
+    private readonly IOrganizer _organizer;
 
-    public MediaSavedHandler(IOrganizer dispatcher) => _dispatcher = dispatcher;
+    public MediaSavedHandler(IOrganizer organizer) => _organizer = organizer;
 
-    public void Handle(MediaSavedNotification notification) => _dispatcher.Organize(notification.SavedEntities);
+    public void Handle(MediaSavedNotification notification) => _organizer.Organize(notification.SavedEntities);
 }

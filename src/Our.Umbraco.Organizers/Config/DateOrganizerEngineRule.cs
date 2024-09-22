@@ -5,7 +5,7 @@ using Our.Umbraco.Organizers.Core.Config;
 
 namespace Our.Umbraco.Organizers.Config;
 
-public class DateFolderEngineRule : FolderEngineRuleBase
+public class DateOrganizerEngineRule : OrganizerEngineRuleBase
 {
     public string DayFormat { get; set; } = "dd";
     

@@ -8,14 +8,14 @@ using Umbraco.Cms.Core.Models;
 namespace Our.Umbraco.Organizers.Engines;
 
 [OrganizerEngine("Alphabetical")]
-public class AlphabeticalOrganizerEngine : IOrganizerEngine<AlphabeticalFolderEngineRule>
+public class AlphabeticalOrganizerEngine : IOrganizerEngine<AlphabeticalOrganizerEngineRule>
 {
-    public void Organize(AlphabeticalFolderEngineRule rule, IContentBase[] entities)
+    public void Organize(AlphabeticalOrganizerEngineRule rule, IContentBase[] entities)
     {
         throw new NotImplementedException();
     }
 
-    public void Cleanup(AlphabeticalFolderEngineRule rule, IContentBase[] entities)
+    public void Cleanup(AlphabeticalOrganizerEngineRule rule, IContentBase[] entities)
     {
         throw new NotImplementedException();
     }
