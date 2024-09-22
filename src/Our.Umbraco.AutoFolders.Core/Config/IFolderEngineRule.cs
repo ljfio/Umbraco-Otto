@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Options;
+using Umbraco.Cms.Core.Models;
+
 namespace Our.Umbraco.AutoFolders.Core.Config;
 
 public interface IFolderEngineRule
@@ -13,4 +16,6 @@ public interface IFolderEngineRule
     IEnumerable<string> ItemTypes { get; }
 
     string FolderType { get; }
+
+    bool Matches(IContentBase entity, IContentBase parent);
 }

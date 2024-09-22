@@ -83,22 +83,18 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
     {
         var settings = _options.Value;
 
-        string itemType = entity.ContentType.Alias;
-
         // Locate the parent and its type
         var parent = GetParent(entity);
 
         if (parent is null)
             return null;
 
-        string parentType = parent.ContentType.Alias;
-
         // Find the matching rule for either content or media
         if (entity is IContent)
-            return FindMatchingRule(settings.Content.Rules, itemType, parentType);
+            return FindMatchingRule(settings.Content.Rules, entity, parent);
 
         if (entity is IMedia)
-            return FindMatchingRule(settings.Media.Rules, itemType, parentType);
+            return FindMatchingRule(settings.Media.Rules, entity, parent);
 
         return null;
     }
@@ -111,11 +107,9 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
 
     private IFolderEngineRule? FindMatchingRule(
         IEnumerable<IFolderEngineRule> rules,
-        string itemType,
-        string parentType) => rules
-        .FirstOrDefault(rule =>
-            rule.ParentTypes.Contains(parentType) &&
-            (!rule.ParentTypes.Any() || rule.ItemTypes.Contains(itemType)));
+        IContentBase entity,
+        IContentBase parent) =>
+        rules.FirstOrDefault(rule => rule.Matches(entity, parent));
 
     private IFolderEngine? GetEngine(string name)
     {
