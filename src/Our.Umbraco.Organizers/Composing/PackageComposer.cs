@@ -38,8 +38,6 @@ public class PackageComposer : IComposer
             .AddNotificationHandler<MediaMovedToRecycleBinNotification, MediaMovedToRecycleBinHandler>();
 
         builder.MediaOrganizerEngines()
-            .Add<AlphabeticalOrganizerEngine>()
-            .Add<DateOrganizerEngine>()
             .Add<TaxonomyMediaOrganizerEngine>();
         
         builder.ContentOrganizerEngines()

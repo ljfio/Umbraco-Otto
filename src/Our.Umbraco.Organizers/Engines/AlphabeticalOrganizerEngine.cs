@@ -8,14 +8,15 @@ using Umbraco.Cms.Core.Models;
 namespace Our.Umbraco.Organizers.Engines;
 
 [OrganizerEngine("Alphabetical")]
-public class AlphabeticalOrganizerEngine : IOrganizerEngine<AlphabeticalOrganizerEngineRule>
+public class AlphabeticalOrganizerEngine<TEntity> : IOrganizerEngine<AlphabeticalOrganizerEngineRule, TEntity>
+    where TEntity : class, IContentBase
 {
-    public void Organize(AlphabeticalOrganizerEngineRule rule, IContentBase[] entities)
+    public void Organize(AlphabeticalOrganizerEngineRule rule, TEntity[] entities)
     {
         throw new NotImplementedException();
     }
 
-    public void Cleanup(AlphabeticalOrganizerEngineRule rule, IContentBase[] entities)
+    public void Cleanup(AlphabeticalOrganizerEngineRule rule, TEntity[] entities)
     {
         throw new NotImplementedException();
     }
