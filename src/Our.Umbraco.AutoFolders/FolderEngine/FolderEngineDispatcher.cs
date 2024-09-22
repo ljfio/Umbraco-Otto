@@ -6,6 +6,8 @@ using Microsoft.Extensions.Options;
 using Our.Umbraco.AutoFolders.Core.Config;
 using Our.Umbraco.AutoFolders.Core.FolderEngine;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Models.Entities;
+using Umbraco.Cms.Core.Services;
 
 namespace Our.Umbraco.AutoFolders.FolderEngine;
 
@@ -13,16 +15,20 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
 {
     private readonly FolderEngineCollection _engineCollection;
     private readonly IServiceProvider _serviceProvider;
-    private readonly IDictionary<string, IFolderEngine> _engines;
+    private readonly IEntityService _entityService;
     private readonly IOptions<FolderSettings> _options;
+
+    private readonly IDictionary<string, IFolderEngine> _engines;
 
     public FolderEngineDispatcher(
         FolderEngineCollection engineCollection,
         IServiceProvider serviceProvider,
+        IEntityService entityService,
         IOptions<FolderSettings> options)
     {
         _engineCollection = engineCollection;
         _options = options;
+        _entityService = entityService;
         _serviceProvider = serviceProvider;
 
         _engines = new Dictionary<string, IFolderEngine>();
@@ -30,42 +36,40 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
 
     public void Organise(IContentBase[] entities)
     {
-        var ruleGroups = entities
-            .GroupBy(FindMatchingRule);
-        
+        var ruleGroups = entities.GroupBy(FindMatchingRule);
+
         foreach (var grouping in ruleGroups)
         {
             var rule = grouping.Key;
-            
+
             if (rule is null)
                 continue;
 
             var engine = GetEngine(rule.Engine);
-            
+
             if (engine is null)
                 continue;
-            
+
             engine.Organise(rule, grouping.ToArray());
         }
     }
 
     public void Cleanup(IContentBase[] entities)
     {
-        var ruleGroups = entities
-            .GroupBy(FindMatchingRule);
-        
+        var ruleGroups = entities.GroupBy(FindMatchingRule);
+
         foreach (var grouping in ruleGroups)
         {
             var rule = grouping.Key;
-            
+
             if (rule is null)
                 continue;
 
             var engine = GetEngine(rule.Engine);
-            
+
             if (engine is null)
                 continue;
-            
+
             engine.Cleanup(rule, grouping.ToArray());
         }
     }
@@ -73,25 +77,42 @@ public class FolderEngineDispatcher : IFolderEngineDispatcher
     private IFolderEngineRule? FindMatchingRule(IContentBase entity)
     {
         var settings = _options.Value;
-        
-        if (entity is IContent content)
-        {
-        }
-        
-        if (entity is IMedia media)
-        {
-            
-        }
+
+        string itemType = entity.ContentType.Alias;
+
+        // Locate the parent and its type
+        var parent = _entityService.Get(entity.ParentId) as IContentEntitySlim;
+
+        if (parent is null)
+            return null;
+
+        string parentType = parent.ContentTypeAlias;
+
+        // Find the matching rule for either content or media
+        if (entity is IContent)
+            return FindMatchingRule(settings.Content.Rules, itemType, parentType);
+
+        if (entity is IMedia)
+            return FindMatchingRule(settings.Media.Rules, itemType, parentType);
 
         return null;
     }
 
+    private IFolderEngineRule? FindMatchingRule(
+        IEnumerable<IFolderEngineRule> rules,
+        string itemType,
+        string parentType) => rules
+        .FirstOrDefault(rule =>
+            rule.ParentTypes.Contains(parentType) &&
+            (!rule.ParentTypes.Any() || rule.ItemTypes.Contains(itemType)));
+
     private IFolderEngine? GetEngine(string name)
     {
-        // Search for engine
+        // Search for engine in the cache
         if (_engines.TryGetValue(name, out var cachedEngine))
             return cachedEngine;
 
+        // Locate the engine based on the name
         var engineType = _engineCollection.FindEngineType(name);
 
         if (engineType is null)
