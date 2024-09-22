@@ -21,7 +21,7 @@ public class ConfigureJsonOptions : IConfigureOptions<JsonOptions>
                 // TODO Dynamic polymorphic types
                 info.PolymorphismOptions = new()
                 {
-                    TypeDiscriminatorPropertyName = "Type",
+                    TypeDiscriminatorPropertyName = "Engine",
                     DerivedTypes =
                     {
                         new(typeof(AlphabeticalFolderEngineRule), "Alphabetical"),

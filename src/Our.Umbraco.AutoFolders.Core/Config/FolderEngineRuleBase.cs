@@ -2,6 +2,8 @@ namespace Our.Umbraco.AutoFolders.Core.Config;
 
 public abstract class FolderEngineRuleBase : IFolderEngineRule
 {
+    public string Engine { get; set; } = string.Empty;
+    
     public string PropertyAlias { get; set; } = string.Empty;
 
     public SortOrder SortOrder { get; set; }
