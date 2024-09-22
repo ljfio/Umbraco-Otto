@@ -5,9 +5,9 @@ using Umbraco.Cms.Core.Models;
 
 namespace Our.Umbraco.Organizers.Core;
 
-public interface IOrganizer
+public interface IOrganizer<TEntity> where TEntity : class, IContentBase
 {
-    void Organize(IEnumerable<IContentBase> entities);
+    void Organize(IEnumerable<TEntity> entities);
 
-    void Cleanup(IEnumerable<IContentBase> entities);
+    void Cleanup(IEnumerable<TEntity> entities);
 }

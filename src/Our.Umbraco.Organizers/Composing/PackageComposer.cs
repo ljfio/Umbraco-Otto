@@ -12,6 +12,7 @@ using Our.Umbraco.Organizers.Engines;
 using Our.Umbraco.Organizers.Notifications;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Notifications;
 
 namespace Our.Umbraco.Organizers.Composing;
@@ -24,7 +25,9 @@ public class PackageComposer : IComposer
 
         builder.Services.AddSingleton<IConfigureOptions<JsonOptions>, ConfigureJsonOptions>();
 
-        builder.Services.AddSingleton<IOrganizer, Organizer>();
+        builder.Services
+            .AddSingleton<IOrganizer<IMedia>, MediaOrganizer>()
+            .AddSingleton<IOrganizer<IContent>, ContentOrganizer>();
         
         builder
             .AddNotificationHandler<ContentSavedNotification, ContentSavedHandler>()

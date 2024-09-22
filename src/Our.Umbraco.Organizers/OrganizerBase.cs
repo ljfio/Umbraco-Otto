@@ -2,43 +2,32 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Our.Umbraco.Organizers.Core;
 using Our.Umbraco.Organizers.Core.Config;
 using Our.Umbraco.Organizers.Core.Engines;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Services;
 
 namespace Our.Umbraco.Organizers;
 
-public class Organizer : IOrganizer
+public abstract class OrganizerBase<TEntity> : IOrganizer<TEntity>
+    where TEntity : class, IContentBase
 {
     private readonly OrganizerEngineCollection _engineCollection;
     private readonly IServiceProvider _serviceProvider;
-    private readonly IEntityService _entityService;
-    private readonly IMediaService _mediaService;
-    private readonly IContentService _contentService;
-    private readonly IOptions<OrganizerSettings> _options;
 
     private readonly IDictionary<string, IOrganizerEngine> _engines;
 
-    public Organizer(
+    public OrganizerBase(
         OrganizerEngineCollection engineCollection,
-        IServiceProvider serviceProvider,
-        IEntityService entityService,
-        IOptions<OrganizerSettings> options, IContentService contentService, IMediaService mediaService)
+        IServiceProvider serviceProvider)
     {
         _engineCollection = engineCollection;
-        _options = options;
-        _contentService = contentService;
-        _mediaService = mediaService;
-        _entityService = entityService;
         _serviceProvider = serviceProvider;
 
         _engines = new Dictionary<string, IOrganizerEngine>();
     }
 
-    public void Organize(IEnumerable<IContentBase> entities)
+    public void Organize(IEnumerable<TEntity> entities)
     {
         var ruleGroups = entities
             .GroupBy(FindMatchingRule)
@@ -60,7 +49,7 @@ public class Organizer : IOrganizer
         }
     }
 
-    public void Cleanup(IEnumerable<IContentBase> entities)
+    public void Cleanup(IEnumerable<TEntity> entities)
     {
         var ruleGroups = entities.GroupBy(FindMatchingRule);
 
@@ -80,10 +69,8 @@ public class Organizer : IOrganizer
         }
     }
 
-    private IOrganizerEngineRule? FindMatchingRule(IContentBase entity)
+    private IOrganizerEngineRule? FindMatchingRule(TEntity entity)
     {
-        var settings = _options.Value;
-
         // Locate the parent and its type
         var parent = GetParent(entity);
 
@@ -91,20 +78,12 @@ public class Organizer : IOrganizer
             return null;
 
         // Find the matching rule for either content or media
-        if (entity is IContent)
-            return FindMatchingRule(settings.Content.Rules, entity, parent);
-
-        if (entity is IMedia)
-            return FindMatchingRule(settings.Media.Rules, entity, parent);
-
-        return null;
+        return FindMatchingRule(GetRules(), entity, parent);
     }
 
-    private IContentBase? GetParent(IContentBase entity) => entity switch
-    {
-        IMedia media => _mediaService.GetParent(media),
-        IContent content => _contentService.GetParent(content),
-    };
+    protected abstract IEnumerable<IOrganizerEngineRule> GetRules();
+    
+    protected abstract TEntity? GetParent(TEntity entity);
 
     private IOrganizerEngineRule? FindMatchingRule(
         IEnumerable<IOrganizerEngineRule> rules,
