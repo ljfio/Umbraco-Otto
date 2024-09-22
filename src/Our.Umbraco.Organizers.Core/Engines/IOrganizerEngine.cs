@@ -4,7 +4,7 @@
 using Our.Umbraco.Organizers.Core.Config;
 using Umbraco.Cms.Core.Models;
 
-namespace Our.Umbraco.Organizers.Core.FolderEngine;
+namespace Our.Umbraco.Organizers.Core.Engines;
 
 public interface IOrganizerEngine<in TRule> : IOrganizerEngine
     where TRule : class, IFolderEngineRule

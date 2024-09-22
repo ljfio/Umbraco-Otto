@@ -5,7 +5,7 @@ using System.Reflection;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Extensions;
 
-namespace Our.Umbraco.Organizers.Core.FolderEngine;
+namespace Our.Umbraco.Organizers.Core.Engines;
 
 public class OrganizerEngineCollection : BuilderCollectionBase<Type>
 {

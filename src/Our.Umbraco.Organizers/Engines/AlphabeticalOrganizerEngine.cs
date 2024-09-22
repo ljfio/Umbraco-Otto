@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using Our.Umbraco.Organizers.Config;
-using Our.Umbraco.Organizers.Core.FolderEngine;
+using Our.Umbraco.Organizers.Core.Engines;
 using Umbraco.Cms.Core.Models;
 
 namespace Our.Umbraco.Organizers.Engines;

@@ -3,7 +3,7 @@
 
 using Umbraco.Cms.Core.Composing;
 
-namespace Our.Umbraco.Organizers.Core.FolderEngine;
+namespace Our.Umbraco.Organizers.Core.Engines;
 
 public class OrganizerEngineCollectionBuilder : TypeCollectionBuilderBase<OrganizerEngineCollectionBuilder, OrganizerEngineCollection, IOrganizerEngine>
 {

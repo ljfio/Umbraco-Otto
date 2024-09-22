@@ -5,7 +5,7 @@ using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Entities;
 using Umbraco.Cms.Core.Services;
 
-namespace Our.Umbraco.Organizers.Core.FolderEngine;
+namespace Our.Umbraco.Organizers.Core.Engines;
 
 public abstract class OrgnizerEngineBase
 {
