@@ -5,7 +5,6 @@ using Our.Umbraco.AutoFolders.Core.Config;
 
 namespace Our.Umbraco.AutoFolders.Config;
 
-[FolderEngineRuleName("Date")]
 public class DateFolderEngineRule : FolderEngineRuleBase
 {
     public string DayFormat { get; set; } = "dd";

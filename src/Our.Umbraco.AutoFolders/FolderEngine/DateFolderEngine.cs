@@ -8,6 +8,7 @@ using Umbraco.Cms.Core.Models.Entities;
 
 namespace Our.Umbraco.AutoFolders.FolderEngine;
 
+[FolderEngine("Date")]
 public class DateFolderEngine : IFolderEngine<DateFolderEngineRule>
 {
     public void Organise(DateFolderEngineRule rule, IContentBase[] entities)

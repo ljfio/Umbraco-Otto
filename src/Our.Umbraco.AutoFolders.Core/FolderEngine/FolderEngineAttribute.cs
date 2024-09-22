@@ -1,12 +1,12 @@
 // Copyright 2024 Luke Fisher
 // SPDX-License-Identifier: Apache-2.0
 
-namespace Our.Umbraco.AutoFolders.Core.Config;
+namespace Our.Umbraco.AutoFolders.Core.FolderEngine;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-public class FolderEngineRuleNameAttribute : Attribute
+public class FolderEngineAttribute : Attribute
 {
-    public FolderEngineRuleNameAttribute(string name)
+    public FolderEngineAttribute(string name)
     {
         Name = name;
     }

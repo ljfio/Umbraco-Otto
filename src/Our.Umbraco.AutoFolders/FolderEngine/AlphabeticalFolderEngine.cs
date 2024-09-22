@@ -4,10 +4,10 @@
 using Our.Umbraco.AutoFolders.Config;
 using Our.Umbraco.AutoFolders.Core.FolderEngine;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Models.Entities;
 
 namespace Our.Umbraco.AutoFolders.FolderEngine;
 
+[FolderEngine("Alphabetical")]
 public class AlphabeticalFolderEngine : IFolderEngine<AlphabeticalFolderEngineRule>
 {
     public void Organise(AlphabeticalFolderEngineRule rule, IContentBase[] entities)

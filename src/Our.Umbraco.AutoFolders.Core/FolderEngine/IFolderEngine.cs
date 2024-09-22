@@ -3,7 +3,6 @@
 
 using Our.Umbraco.AutoFolders.Core.Config;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Models.Entities;
 
 namespace Our.Umbraco.AutoFolders.Core.FolderEngine;
 

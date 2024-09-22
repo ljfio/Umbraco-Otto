@@ -9,6 +9,7 @@ using Umbraco.Cms.Core.Services;
 
 namespace Our.Umbraco.AutoFolders.FolderEngine;
 
+[FolderEngine("Taxonomy")]
 public class TaxonomyFolderEngine : FolderEngineBase, IFolderEngine<TaxonomyFolderEngineRule>
 {
     public TaxonomyFolderEngine(

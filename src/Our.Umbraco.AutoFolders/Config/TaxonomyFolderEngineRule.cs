@@ -5,5 +5,4 @@ using Our.Umbraco.AutoFolders.Core.Config;
 
 namespace Our.Umbraco.AutoFolders.Config;
 
-[FolderEngineRuleName("Taxonomy")]
 public class TaxonomyFolderEngineRule : FolderEngineRuleBase;
