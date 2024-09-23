@@ -5,5 +5,5 @@ namespace Our.Umbraco.Organizers;
 
 internal static class PackageConstants
 {
-    public const string PackageName = "AutoFolders";
+    public const string PackageName = "Organizers";
 }
