@@ -8,6 +8,8 @@ dotnet add Our.Umbraco.Organizers
 
 ## Configuring
 
+To configure the Organizer package, update the Application Settings in your solution with the appropriate rules to use the appropriate organizational strategy for your use case.
+
 ```json
 {
   "Organizers": {
@@ -21,12 +23,21 @@ dotnet add Our.Umbraco.Organizers
 }
 ```
 
-## Rules
+## Rules / Strategies
+
+Included with the package are the following strategies that can be used when building your rules.
 
 ### Alphabetical
 
 ```json
 {
+  "Strategy": "Alphabetical",
+  "PropertyAlias": "",
+  "SortOrder": "Ascending",
+  "ParentTypes": [],
+  "ItemTypes": [],
+  "FolderType": "",
+  "NumberOfCharacters": 1
 }
 ```
 
@@ -34,6 +45,29 @@ dotnet add Our.Umbraco.Organizers
 
 ```json
 {
+  "Strategy": "Date",
+  "PropertyAlias": "",
+  "DefaultSortOrder": "Ascending",
+  "ParentTypes": [],
+  "ItemTypes": [],
+  "Day": {
+    "Format": "dd",
+    "FolderType": "",
+    "CreateFolder": true,
+    "SortOrder": "Ascending"
+  },
+  "Month": {
+    "Format": "MM",
+    "FolderType": "",
+    "CreateFolder": true,
+    "SortOrder": "Ascending"
+  },
+  "Year": {
+    "Format": "YYYY",
+    "FolderType": "",
+    "CreateFolder": true,
+    "SortOrder": "Ascending"
+  }
 }
 ```
 
@@ -41,9 +75,15 @@ dotnet add Our.Umbraco.Organizers
 
 ```json
 {
+  "Strategy": "Taxonomy",
+  "PropertyAlias": "",
+  "SortOrder": "Ascending",
+  "ParentTypes": [],
+  "ItemTypes": [],
+  "FolderType": ""
 }
-
 ```
+
 ## Extending
 
 ```csharp
