@@ -1,26 +1,26 @@
 // Copyright 2024 Luke Fisher
 // SPDX-License-Identifier: Apache-2.0
 
-using Our.Umbraco.Organizers.Config;
-using Our.Umbraco.Organizers.Core.Engines;
 using Our.Umbraco.Organizers.Core.Services;
+using Our.Umbraco.Organizers.Core.Strategies;
+using Our.Umbraco.Organizers.Rules;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 
-namespace Our.Umbraco.Organizers.Engines;
+namespace Our.Umbraco.Organizers.Strategies;
 
-public abstract class TaxonomyOrganizerEngine<TEntity> : IOrganizerEngine<TaxonomyOrganizerEngineRule, TEntity>
+public abstract class TaxonomyOrganizerStrategy<TEntity> : IOrganizerStrategy<TaxonomyOrganizerRule, TEntity>
     where TEntity : class, IContentBase
 {
     private readonly IOrganizerService<TEntity> _organizerService;
 
-    protected TaxonomyOrganizerEngine(IOrganizerService<TEntity> organizerService)
+    protected TaxonomyOrganizerStrategy(IOrganizerService<TEntity> organizerService)
     {
         _organizerService = organizerService;
     }
 
-    public OperationResult Organize(TaxonomyOrganizerEngineRule rule, TEntity[] entities)
+    public OperationResult Organize(TaxonomyOrganizerRule rule, TEntity[] entities)
     {
         var messages = new EventMessages();
         
@@ -58,7 +58,7 @@ public abstract class TaxonomyOrganizerEngine<TEntity> : IOrganizerEngine<Taxono
         return OperationResult.Succeed(messages);
     }
 
-    public OperationResult Cleanup(TaxonomyOrganizerEngineRule rule, TEntity[] entities)
+    public OperationResult Cleanup(TaxonomyOrganizerRule rule, TEntity[] entities)
     {
         var messages = new EventMessages();
         

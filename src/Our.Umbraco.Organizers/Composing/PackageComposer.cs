@@ -9,9 +9,9 @@ using Our.Umbraco.Organizers.Core.Extensions;
 using Our.Umbraco.Organizers.Config;
 using Our.Umbraco.Organizers.Core;
 using Our.Umbraco.Organizers.Core.Services;
-using Our.Umbraco.Organizers.Engines;
 using Our.Umbraco.Organizers.Notifications;
 using Our.Umbraco.Organizers.Services;
+using Our.Umbraco.Organizers.Strategies;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models;
@@ -41,10 +41,10 @@ public class PackageComposer : IComposer
             .AddNotificationHandler<MediaDeletedNotification, MediaDeletedHandler>()
             .AddNotificationHandler<MediaMovedToRecycleBinNotification, MediaMovedToRecycleBinHandler>();
 
-        builder.MediaOrganizerEngines()
-            .Add<TaxonomyMediaOrganizerEngine>();
+        builder.MediaOrganizerStrategies()
+            .Add<TaxonomyMediaOrganizerStrategy>();
         
-        builder.ContentOrganizerEngines()
-            .Add<TaxonomyContentOrganizerEngine>();
+        builder.ContentOrganizerStrategies()
+            .Add<TaxonomyContentOrganizerStrategy>();
     }
 }

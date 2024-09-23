@@ -3,7 +3,8 @@
 
 using Microsoft.Extensions.Options;
 using Our.Umbraco.Organizers.Core.Config;
-using Our.Umbraco.Organizers.Core.Engines;
+using Our.Umbraco.Organizers.Core.Rules;
+using Our.Umbraco.Organizers.Core.Strategies;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 
@@ -15,19 +16,19 @@ public class MediaOrganizer : OrganizerBase<IMedia>
     private readonly IOptions<OrganizerSettings> _options;
 
     public MediaOrganizer(
-        OrganizerEngineCollection<IMedia> engineCollection,
+        OrganizerStrategyCollection<IMedia> strategyCollection,
         IServiceProvider serviceProvider,
         IMediaService mediaService,
         IOptions<OrganizerSettings> options) :
         base(
-            engineCollection,
+            strategyCollection,
             serviceProvider)
     {
         _mediaService = mediaService;
         _options = options;
     }
 
-    protected override IEnumerable<IOrganizerEngineRule> GetRules() => _options.Value.Media.Rules;
+    protected override IEnumerable<IOrganizerRule> GetRules() => _options.Value.Media.Rules;
 
     protected override IMedia? GetParent(IMedia entity) => _mediaService.GetParent(entity);
 }

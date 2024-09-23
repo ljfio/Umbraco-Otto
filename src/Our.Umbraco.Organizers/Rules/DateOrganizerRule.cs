@@ -1,11 +1,11 @@
 // Copyright 2024 Luke Fisher
 // SPDX-License-Identifier: Apache-2.0
 
-using Our.Umbraco.Organizers.Core.Config;
+using Our.Umbraco.Organizers.Core.Rules;
 
-namespace Our.Umbraco.Organizers.Config;
+namespace Our.Umbraco.Organizers.Rules;
 
-public class DateOrganizerEngineRule : OrganizerEngineRuleBase
+public class DateOrganizerRule : OrganizerRuleBase
 {
     public string DayFormat { get; set; } = "dd";
     

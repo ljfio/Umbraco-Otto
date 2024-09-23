@@ -3,7 +3,8 @@
 
 using Microsoft.Extensions.Options;
 using Our.Umbraco.Organizers.Core.Config;
-using Our.Umbraco.Organizers.Core.Engines;
+using Our.Umbraco.Organizers.Core.Rules;
+using Our.Umbraco.Organizers.Core.Strategies;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 
@@ -15,19 +16,19 @@ public class ContentOrganizer : OrganizerBase<IContent>
     private readonly IOptions<OrganizerSettings> _options;
 
     public ContentOrganizer(
-        OrganizerEngineCollection<IContent> engineCollection,
+        OrganizerStrategyCollection<IContent> strategyCollection,
         IServiceProvider serviceProvider,
         IContentService contentService,
         IOptions<OrganizerSettings> options) :
         base(
-            engineCollection,
+            strategyCollection,
             serviceProvider)
     {
         _contentService = contentService;
         _options = options;
     }
 
-    protected override IEnumerable<IOrganizerEngineRule> GetRules() => _options.Value.Content.Rules;
+    protected override IEnumerable<IOrganizerRule> GetRules() => _options.Value.Content.Rules;
 
     protected override IContent? GetParent(IContent entity) => _contentService.GetParent(entity);
 }

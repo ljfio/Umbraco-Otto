@@ -1,10 +1,10 @@
 using Umbraco.Cms.Core.Models;
 
-namespace Our.Umbraco.Organizers.Core.Config;
+namespace Our.Umbraco.Organizers.Core.Rules;
 
-public abstract class OrganizerEngineRuleBase : IOrganizerEngineRule
+public abstract class OrganizerRuleBase : IOrganizerRule
 {
-    public string Engine { get; set; } = string.Empty;
+    public string Strategy { get; set; } = string.Empty;
 
     public string PropertyAlias { get; set; } = string.Empty;
 

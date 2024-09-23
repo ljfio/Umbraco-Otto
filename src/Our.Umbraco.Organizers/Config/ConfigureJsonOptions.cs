@@ -5,6 +5,8 @@ using System.Text.Json.Serialization.Metadata;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Our.Umbraco.Organizers.Core.Config;
+using Our.Umbraco.Organizers.Core.Rules;
+using Our.Umbraco.Organizers.Rules;
 
 namespace Our.Umbraco.Organizers.Config;
 
@@ -15,18 +17,18 @@ public class ConfigureJsonOptions : IConfigureOptions<JsonOptions>
         options.JsonSerializerOptions.TypeInfoResolver?
             .WithAddedModifier(static info =>
             {
-                if (info.Type != typeof(IOrganizerEngineRule))
+                if (info.Type != typeof(IOrganizerRule))
                     return;
 
                 // TODO Dynamic polymorphic types
                 info.PolymorphismOptions = new()
                 {
-                    TypeDiscriminatorPropertyName = "Engine",
+                    TypeDiscriminatorPropertyName = "Strategy",
                     DerivedTypes =
                     {
-                        new(typeof(AlphabeticalOrganizerEngineRule), "Alphabetical"),
-                        new(typeof(DateOrganizerEngineRule), "Date"),
-                        new(typeof(TaxonomyOrganizerEngineRule), "Taxonomy"),
+                        new(typeof(AlphabeticalOrganizerRule), "Alphabetical"),
+                        new(typeof(DateOrganizerRule), "Date"),
+                        new(typeof(TaxonomyOrganizerRule), "Taxonomy"),
                     }
                 };
             });

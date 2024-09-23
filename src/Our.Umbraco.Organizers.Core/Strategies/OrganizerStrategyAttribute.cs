@@ -1,12 +1,12 @@
 // Copyright 2024 Luke Fisher
 // SPDX-License-Identifier: Apache-2.0
 
-namespace Our.Umbraco.Organizers.Core.Engines;
+namespace Our.Umbraco.Organizers.Core.Strategies;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-public class OrganizerEngineAttribute : Attribute
+public class OrganizerStrategyAttribute : Attribute
 {
-    public OrganizerEngineAttribute(string name)
+    public OrganizerStrategyAttribute(string name)
     {
         Name = name;
     }

@@ -1,4 +1,4 @@
-namespace Our.Umbraco.Organizers.Core.Config;
+namespace Our.Umbraco.Organizers.Core;
 
 public enum SortOrder
 {
