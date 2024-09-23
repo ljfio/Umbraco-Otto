@@ -5,7 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Our.Umbraco.Organizers.Core;
 using Our.Umbraco.Organizers.Core.Config;
 using Our.Umbraco.Organizers.Core.Engines;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Services;
 
 namespace Our.Umbraco.Organizers;
 
@@ -27,7 +29,7 @@ public abstract class OrganizerBase<TEntity> : IOrganizer<TEntity>
         _engines = new Dictionary<string, IOrganizerEngine<TEntity>>();
     }
 
-    public void Organize(IEnumerable<TEntity> entities)
+    public void Organize(IEnumerable<TEntity> entities, OrganizerMode mode)
     {
         var ruleGroups = entities
             .GroupBy(FindMatchingRule)
@@ -45,30 +47,20 @@ public abstract class OrganizerBase<TEntity> : IOrganizer<TEntity>
             if (engine is null)
                 continue;
 
-            engine.Organize(rule, grouping.ToArray());
+            var result = RunEngine(engine, rule, grouping.ToArray(), mode);
         }
     }
 
-    public void Cleanup(IEnumerable<TEntity> entities)
+    private OperationResult RunEngine(
+        IOrganizerEngine<TEntity> engine,
+        IOrganizerEngineRule rule,
+        TEntity[] entities,
+        OrganizerMode mode) => mode switch
     {
-        var ruleGroups = entities.GroupBy(FindMatchingRule);
-
-        foreach (var grouping in ruleGroups)
-        {
-            var rule = grouping.Key;
-
-            if (rule is null)
-                continue;
-
-            var engine = GetEngine(rule.Engine);
-
-            if (engine is null)
-                continue;
-
-            engine.Cleanup(rule, grouping.ToArray());
-        }
-    }
-
+        OrganizerMode.Organize => engine.Organize(rule, entities),
+        OrganizerMode.Cleanup => engine.Cleanup(rule, entities),
+    };
+    
     private IOrganizerEngineRule? FindMatchingRule(TEntity entity)
     {
         // Locate the parent and its type

@@ -15,5 +15,5 @@ public class ContentMovedToRecycleBinHandler : INotificationHandler<ContentMoved
     public ContentMovedToRecycleBinHandler(IOrganizer<IContent> organizer) => _organizer = organizer;
 
     public void Handle(ContentMovedToRecycleBinNotification notification) =>
-        _organizer.Cleanup(notification.MoveInfoCollection.Select(e => e.Entity).ToArray());
+        _organizer.Organize(notification.MoveInfoCollection.Select(e => e.Entity).ToArray(), OrganizerMode.Cleanup);
 }

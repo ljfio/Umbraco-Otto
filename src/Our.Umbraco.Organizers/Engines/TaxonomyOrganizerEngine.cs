@@ -4,7 +4,9 @@
 using Our.Umbraco.Organizers.Config;
 using Our.Umbraco.Organizers.Core.Engines;
 using Our.Umbraco.Organizers.Core.Services;
+using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Services;
 
 namespace Our.Umbraco.Organizers.Engines;
 
@@ -18,8 +20,10 @@ public abstract class TaxonomyOrganizerEngine<TEntity> : IOrganizerEngine<Taxono
         _organizerService = organizerService;
     }
 
-    public void Organize(TaxonomyOrganizerEngineRule rule, TEntity[] entities)
+    public OperationResult Organize(TaxonomyOrganizerEngineRule rule, TEntity[] entities)
     {
+        var messages = new EventMessages();
+        
         foreach (var entity in entities)
         {
             // Get all folders
@@ -50,10 +54,14 @@ public abstract class TaxonomyOrganizerEngine<TEntity> : IOrganizerEngine<Taxono
 
             _organizerService.Save(entity);
         }
+        
+        return OperationResult.Succeed(messages);
     }
 
-    public void Cleanup(TaxonomyOrganizerEngineRule rule, TEntity[] entities)
+    public OperationResult Cleanup(TaxonomyOrganizerEngineRule rule, TEntity[] entities)
     {
+        var messages = new EventMessages();
+        
         foreach (var entity in entities)
         {
             // Get all folders
@@ -70,5 +78,7 @@ public abstract class TaxonomyOrganizerEngine<TEntity> : IOrganizerEngine<Taxono
             if (matching is not null && !_organizerService.HasChildren(matching.Id))
                 _organizerService.Delete(matching);
         }
+
+        return OperationResult.Succeed(messages);
     }
 }

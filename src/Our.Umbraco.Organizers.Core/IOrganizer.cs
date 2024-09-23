@@ -5,9 +5,12 @@ using Umbraco.Cms.Core.Models;
 
 namespace Our.Umbraco.Organizers.Core;
 
-public interface IOrganizer<TEntity> where TEntity : class, IContentBase
+public interface IOrganizer<in TEntity> where TEntity : class, IContentBase
 {
-    void Organize(IEnumerable<TEntity> entities);
-
-    void Cleanup(IEnumerable<TEntity> entities);
+    /// <summary>
+    /// Invokes the organizer to organize the <paramref name="entities"/> with the appropriate <paramref name="mode"/>
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <param name="mode"></param>
+    void Organize(IEnumerable<TEntity> entities, OrganizerMode mode);
 }

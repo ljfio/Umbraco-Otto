@@ -15,5 +15,5 @@ public class MediaMovedToRecycleBinHandler : INotificationHandler<MediaMovedToRe
     public MediaMovedToRecycleBinHandler(IOrganizer<IMedia> organizer) => _organizer = organizer;
 
     public void Handle(MediaMovedToRecycleBinNotification notification) =>
-        _organizer.Cleanup(notification.MoveInfoCollection.Select(e => e.Entity).ToArray());
+        _organizer.Organize(notification.MoveInfoCollection.Select(e => e.Entity).ToArray(), OrganizerMode.Cleanup);
 }

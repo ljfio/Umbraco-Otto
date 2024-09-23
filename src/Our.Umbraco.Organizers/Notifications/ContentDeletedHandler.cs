@@ -14,5 +14,6 @@ public class ContentDeletedHandler : INotificationHandler<ContentDeletedNotifica
 
     public ContentDeletedHandler(IOrganizer<IContent> organizer) => _organizer = organizer;
 
-    public void Handle(ContentDeletedNotification notification) => _organizer.Cleanup(notification.DeletedEntities);
+    public void Handle(ContentDeletedNotification notification) => 
+        _organizer.Organize(notification.DeletedEntities, OrganizerMode.Cleanup);
 }

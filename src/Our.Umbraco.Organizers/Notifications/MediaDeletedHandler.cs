@@ -14,5 +14,6 @@ public class MediaDeletedHandler : INotificationHandler<MediaDeletedNotification
 
     public MediaDeletedHandler(IOrganizer<IMedia> organizer) => _organizer = organizer;
 
-    public void Handle(MediaDeletedNotification notification) => _organizer.Cleanup(notification.DeletedEntities);
+    public void Handle(MediaDeletedNotification notification) =>
+        _organizer.Organize(notification.DeletedEntities, OrganizerMode.Cleanup);
 }
