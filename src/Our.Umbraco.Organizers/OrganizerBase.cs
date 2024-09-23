@@ -32,7 +32,7 @@ public abstract class OrganizerBase<TEntity> : IOrganizer<TEntity>
     public void Organize(IEnumerable<TEntity> entities, OrganizerMode mode)
     {
         var ruleGroups = entities
-            .GroupBy(FindMatchingRule)
+            .GroupBy(entity => FindMatchingRule(entity, mode))
             .Where(group => group.Key is not null);
 
         foreach (var grouping in ruleGroups)
@@ -61,7 +61,7 @@ public abstract class OrganizerBase<TEntity> : IOrganizer<TEntity>
         OrganizerMode.Cleanup => engine.Cleanup(rule, entities),
     };
     
-    private IOrganizerEngineRule? FindMatchingRule(TEntity entity)
+    private IOrganizerEngineRule? FindMatchingRule(TEntity entity, OrganizerMode mode)
     {
         // Locate the parent and its type
         var parent = GetParent(entity);
@@ -70,7 +70,7 @@ public abstract class OrganizerBase<TEntity> : IOrganizer<TEntity>
             return null;
 
         // Find the matching rule for either content or media
-        return FindMatchingRule(GetRules(), entity, parent);
+        return FindMatchingRule(GetRules(), entity, parent, mode);
     }
 
     protected abstract IEnumerable<IOrganizerEngineRule> GetRules();
@@ -80,8 +80,9 @@ public abstract class OrganizerBase<TEntity> : IOrganizer<TEntity>
     private IOrganizerEngineRule? FindMatchingRule(
         IEnumerable<IOrganizerEngineRule> rules,
         IContentBase entity,
-        IContentBase parent) =>
-        rules.FirstOrDefault(rule => rule.Matches(entity, parent));
+        IContentBase parent, 
+        OrganizerMode mode) =>
+        rules.FirstOrDefault(rule => rule.Matches(entity, parent, mode));
 
     private IOrganizerEngine<TEntity>? GetEngine(string name)
     {

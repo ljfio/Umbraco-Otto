@@ -16,5 +16,5 @@ public interface IOrganizerEngineRule
 
     string FolderType { get; }
 
-    bool Matches(IContentBase entity, IContentBase parent);
+    bool Matches(IContentBase entity, IContentBase parent, OrganizerMode mode);
 }
