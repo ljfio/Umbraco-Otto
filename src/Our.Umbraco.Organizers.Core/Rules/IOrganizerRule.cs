@@ -6,5 +6,5 @@ public interface IOrganizerRule
 {
     string Strategy { get; }
     
-    bool Matches(IContentBase entity, IContentBase parent, OrganizerMode mode);
+    MatchType Matches(IContentBase entity, IContentBase parent, OrganizerMode mode);
 }

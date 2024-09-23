@@ -4,6 +4,7 @@
 using Our.Umbraco.Organizers.Core;
 using Our.Umbraco.Organizers.Core.Rules;
 using Umbraco.Cms.Core.Models;
+using MatchType = Our.Umbraco.Organizers.Core.Rules.MatchType;
 
 namespace Our.Umbraco.Organizers.Rules;
 
@@ -45,7 +46,7 @@ public class DateOrganizerRule : IOrganizerRule
         public SortOrder SortOrder { get; set; }
     }
     
-    public bool Matches(IContentBase entity, IContentBase parent, OrganizerMode mode)
+    public MatchType Matches(IContentBase entity, IContentBase parent, OrganizerMode mode)
     {
         throw new NotImplementedException();
     }

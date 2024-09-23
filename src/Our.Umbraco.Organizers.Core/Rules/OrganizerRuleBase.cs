@@ -16,17 +16,30 @@ public abstract class OrganizerRuleBase : IOrganizerRule
 
     public string FolderType { get; set; } = string.Empty;
 
-    public virtual bool Matches(IContentBase entity, IContentBase parent, OrganizerMode mode) => mode switch
+    public virtual MatchType Matches(IContentBase entity, IContentBase parent, OrganizerMode mode)
     {
-        OrganizerMode.Organize => IsParentOrFolder(parent) && IsMatchingType(entity),
-        OrganizerMode.Cleanup => IsParentOrFolder(parent) && IsMatchingType(entity),
-    };
+        if (IsMatchingType(entity) && IsParentOrFolder(parent))
+            return MatchType.Entity;
 
-    private bool IsParentOrFolder(IContentBase parent) =>
-        ParentTypes.Contains(parent.ContentType.Alias) ||
-        FolderType.Equals(parent.ContentType.Alias);
+        if (IsParent(entity))
+            return MatchType.Parent;
 
-    private bool IsMatchingType(IContentBase entity) => 
-        !ItemTypes.Any() || 
+        if (IsFolder(entity))
+            return MatchType.Folder;
+
+        return MatchType.None;
+    }
+
+    protected bool IsParentOrFolder(IContentBase entity) =>
+        IsParent(entity) || IsFolder(entity);
+
+    protected bool IsParent(IContentBase entity) =>
+        ParentTypes.Contains(entity.ContentType.Alias);
+
+    protected bool IsFolder(IContentBase entity) =>
+        FolderType.Contains(entity.ContentType.Alias);
+
+    protected bool IsMatchingType(IContentBase entity) =>
+        !ItemTypes.Any() ||
         ItemTypes.Contains(entity.ContentType.Alias);
 }

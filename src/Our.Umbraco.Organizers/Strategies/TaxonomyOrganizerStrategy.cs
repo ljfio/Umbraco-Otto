@@ -1,6 +1,7 @@
 // Copyright 2024 Luke Fisher
 // SPDX-License-Identifier: Apache-2.0
 
+using Our.Umbraco.Organizers.Core.Rules;
 using Our.Umbraco.Organizers.Core.Services;
 using Our.Umbraco.Organizers.Core.Strategies;
 using Our.Umbraco.Organizers.Rules;
@@ -20,12 +21,14 @@ public abstract class TaxonomyOrganizerStrategy<TEntity> : IOrganizerStrategy<Ta
         _organizerService = organizerService;
     }
 
-    public OperationResult Organize(TaxonomyOrganizerRule rule, TEntity[] entities)
+    public OperationResult Organize(TaxonomyOrganizerRule rule, IEnumerable<Match<TEntity>> matches)
     {
         var messages = new EventMessages();
         
-        foreach (var entity in entities)
+        foreach (var match in matches)
         {
+            var entity = match.Entity;
+            
             // Get all folders
             var folders = _organizerService.GetFolders(entity.ParentId, rule.FolderType);
 
@@ -58,12 +61,14 @@ public abstract class TaxonomyOrganizerStrategy<TEntity> : IOrganizerStrategy<Ta
         return OperationResult.Succeed(messages);
     }
 
-    public OperationResult Cleanup(TaxonomyOrganizerRule rule, TEntity[] entities)
+    public OperationResult Cleanup(TaxonomyOrganizerRule rule, IEnumerable<Match<TEntity>> matches)
     {
         var messages = new EventMessages();
         
-        foreach (var entity in entities)
+        foreach (var match in matches)
         {
+            var entity = match.Entity;
+            
             // Get all folders
             var folders = _organizerService.GetFolders(entity.ParentId, rule.FolderType);
 
