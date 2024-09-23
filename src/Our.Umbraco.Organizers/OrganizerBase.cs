@@ -77,6 +77,7 @@ public abstract class OrganizerBase<TEntity> : IOrganizer<TEntity>
     {
         OrganizerMode.Organize => strategy.Organize(rule, matches),
         OrganizerMode.Cleanup => strategy.Cleanup(rule, matches),
+        _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null),
     };
 
     private bool TryFindMatchingRule(
