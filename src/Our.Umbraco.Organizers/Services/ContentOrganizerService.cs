@@ -32,6 +32,9 @@ public class ContentOrganizerService : IOrganizerService<IContent>
         _contentService.GetPagedChildren(parentId, 0, 100, out _);
 
     /// <inheritdoc />
+    public IContent? GetParent(IContent entity) => _contentService.GetParent(entity);
+
+    /// <inheritdoc />
     public bool HasChildren(int id) =>
         _contentService.HasChildren(id);
 }

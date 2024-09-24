@@ -10,9 +10,9 @@ public abstract class OrganizerRuleBase : IOrganizerRule
 
     public SortOrder SortOrder { get; set; }
 
-    public IEnumerable<string> ParentTypes { get; set; } = [];
+    public IReadOnlyCollection<string> ParentTypes { get; set; } = [];
 
-    public IEnumerable<string> ItemTypes { get; set; } = [];
+    public IReadOnlyCollection<string> ItemTypes { get; set; } = [];
 
     public string FolderType { get; set; } = string.Empty;
 

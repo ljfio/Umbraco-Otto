@@ -8,6 +8,7 @@ using Our.Umbraco.Organizers.Rules;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
+using MatchType = Our.Umbraco.Organizers.Core.Rules.MatchType;
 
 namespace Our.Umbraco.Organizers.Strategies;
 
@@ -24,51 +25,80 @@ public abstract class TaxonomyOrganizerStrategy<TEntity> : IOrganizerStrategy<Ta
     public OperationResult Organize(TaxonomyOrganizerRule rule, IEnumerable<Match<TEntity>> matches)
     {
         var messages = new EventMessages();
-        
+
         foreach (var match in matches)
         {
             var entity = match.Entity;
-            
-            // Get all folders
-            var folders = _organizerService.GetFolders(entity.ParentId, rule.FolderType);
 
-            // Get the tag from the entity using the property alias
-            var tag = entity.HasProperty(rule.PropertyAlias) ? entity.GetValue(rule.PropertyAlias)?.ToString() : null;
-
-            if (string.IsNullOrEmpty(tag))
-                continue;
-
-            // Find a matching folder to put the entity into
-            var matching = folders.FirstOrDefault(folder => tag.Equals(folder.Name));
-
-            if (matching is not null)
+            if (match.MatchType == MatchType.Entity)
             {
-                entity.SetParent(matching);
+                // Get the tag from the entity using the property alias
+                var tag = entity.HasProperty(rule.PropertyAlias)
+                    ? entity.GetValue(rule.PropertyAlias)?.ToString()
+                    : null;
+
+                if (string.IsNullOrEmpty(tag))
+                    continue;
+
+                // Check that the entity has the correct parent folder
+                var parent = _organizerService.GetParent(entity);
+
+                if (parent is null)
+                    continue;
+                
+                if (rule.FolderType.Contains(parent.ContentType.Alias) &&
+                    tag.Equals(parent.Name))
+                    continue;
+                
+                // Locate the root
+                var root = _organizerService.GetRoot(entity, rule.ParentTypes);
+                
+                if (root is null)
+                    continue;
+                
+                // Get all folders
+                var folders = _organizerService.GetFolders(root.Id, rule.FolderType);
+
+                // Find a matching folder to put the entity into
+                var matching = folders.FirstOrDefault(folder => tag.Equals(folder.Name));
+
+                if (matching is not null)
+                {
+                    if (matching.Id != entity.ParentId)
+                    {
+                        entity.SetParent(matching);
+                        
+                        _organizerService.Save(entity);
+                    }
+                }
+                else
+                {
+                    // Create the folder if it does not exist
+                    var folder = _organizerService.CreateFolder(tag, root.Id, rule.FolderType);
+
+                    _organizerService.Save(folder);
+
+                    entity.SetParent(folder);
+
+                    _organizerService.Save(entity);
+                }
             }
-            else
-            {
-                // Create the folder if it does not exist
-                var folder = _organizerService.CreateFolder(tag, entity.ParentId, rule.FolderType);
-
-                _organizerService.Save(folder);
-
-                entity.SetParent(folder);
-            }
-
-            _organizerService.Save(entity);
         }
-        
+
         return OperationResult.Succeed(messages);
     }
 
     public OperationResult Cleanup(TaxonomyOrganizerRule rule, IEnumerable<Match<TEntity>> matches)
     {
         var messages = new EventMessages();
-        
+
         foreach (var match in matches)
         {
+            if (match.MatchType != MatchType.Entity)
+                continue;
+
             var entity = match.Entity;
-            
+
             // Get all folders
             var folders = _organizerService.GetFolders(entity.ParentId, rule.FolderType);
 

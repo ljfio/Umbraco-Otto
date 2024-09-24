@@ -33,6 +33,32 @@ public interface IOrganizerService<TEntity>
     /// <param name="id"></param>
     /// <returns></returns>
     IEnumerable<TEntity> GetFolders(int id, string folderType);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    TEntity? GetParent(TEntity entity);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <param name="parentTypes"></param>
+    /// <returns></returns>
+    TEntity? GetRoot(TEntity entity, IReadOnlyCollection<string> parentTypes)
+    {
+        var parent = GetParent(entity);
+
+        if (parent is null)
+            return null;
+
+        if (parentTypes.Contains(parent.ContentType.Alias))
+            return parent;
+
+        return GetRoot(parent, parentTypes);
+    }
     
     /// <summary>
     /// Checks if the item has children

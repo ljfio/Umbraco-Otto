@@ -28,5 +28,8 @@ public class MediaOrganizerService : IOrganizerService<IMedia>
         _mediaService.GetPagedChildren(id, 0, 100, out _);
 
     /// <inheritdoc />
+    public IMedia? GetParent(IMedia entity) => _mediaService.GetParent(entity);
+
+    /// <inheritdoc />
     public bool HasChildren(int id) => _mediaService.HasChildren(id);
 }
