@@ -13,6 +13,13 @@ public interface IOrganizerService<TEntity>
     /// <param name="entity"></param>
     /// <param name="publish"></param>
     void Save(TEntity entity, bool publish = false);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <param name="parentId"></param>
+    void Move(TEntity entity, int parentId);
     
     /// <summary>
     /// Deletes the item using the correct service

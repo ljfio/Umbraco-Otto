@@ -26,6 +26,9 @@ public class ContentOrganizerService : IOrganizerService<IContent>
         else
             _contentService.Save(entity);
     }
+    
+    /// <inheritdoc />
+    public void Move(IContent entity, int parentId) => _contentService.Move(entity, parentId);
 
     /// <inheritdoc />
     public void Delete(IContent entity) =>

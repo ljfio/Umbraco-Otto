@@ -64,9 +64,7 @@ public abstract class TaxonomyOrganizer<TEntity> : IOrganizer<TaxonomyOrganizerR
                 {
                     if (matching.Id != entity.ParentId)
                     {
-                        entity.SetParent(matching);
-
-                        _organizerService.Save(entity);
+                        _organizerService.Move(entity, matching.Id);
                     }
                 }
                 else
@@ -75,10 +73,8 @@ public abstract class TaxonomyOrganizer<TEntity> : IOrganizer<TaxonomyOrganizerR
                     var folder = _organizerService.CreateFolder(tag, root.Id, rule.FolderType);
 
                     _organizerService.Save(folder, entity is IContent { Published: true });
-
-                    entity.SetParent(folder);
-
-                    _organizerService.Save(entity);
+                    
+                    _organizerService.Move(entity, folder.Id);
                 }
             }
         }
