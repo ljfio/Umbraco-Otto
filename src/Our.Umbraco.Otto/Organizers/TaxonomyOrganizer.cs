@@ -65,6 +65,8 @@ public abstract class TaxonomyOrganizer<TEntity> : IOrganizer<TaxonomyOrganizerR
                     if (matching.Id != entity.ParentId)
                     {
                         entity.SetParent(matching);
+
+                        _organizerService.Save(entity);
                     }
                 }
                 else
@@ -75,6 +77,8 @@ public abstract class TaxonomyOrganizer<TEntity> : IOrganizer<TaxonomyOrganizerR
                     _organizerService.Save(folder, entity is IContent { Published: true });
 
                     entity.SetParent(folder);
+
+                    _organizerService.Save(entity);
                 }
             }
         }

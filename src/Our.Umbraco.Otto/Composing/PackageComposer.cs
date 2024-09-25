@@ -36,9 +36,9 @@ public class PackageComposer : IComposer
             .AddSingleton<IOrganizerSelector<IContent>, ContentOrganizerSelector>();
         
         builder
-            .AddNotificationHandler<ContentSavingNotification, ContentSavingHandler>()
-            .AddNotificationHandler<ContentDeletingNotification, ContentDeletingHandler>()
-            .AddNotificationHandler<ContentMovingToRecycleBinNotification, ContentMovingToRecycleBinHandler>()
+            .AddNotificationHandler<ContentSavedNotification, ContentSavedHandler>()
+            .AddNotificationHandler<ContentDeletedNotification, ContentDeletedHandler>()
+            .AddNotificationHandler<ContentMovedToRecycleBinNotification, ContentMovedToRecycleBinHandler>()
             .AddNotificationHandler<MediaSavedNotification, MediaSavedHandler>()
             .AddNotificationHandler<MediaDeletedNotification, MediaDeletedHandler>()
             .AddNotificationHandler<MediaMovedToRecycleBinNotification, MediaMovedToRecycleBinHandler>();
