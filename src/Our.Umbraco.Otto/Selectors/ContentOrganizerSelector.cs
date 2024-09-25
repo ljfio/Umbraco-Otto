@@ -17,12 +17,9 @@ public class ContentOrganizerSelector : OrganizerSelectorBase<IContent>
 
     public ContentOrganizerSelector(
         OrganizerCollection<IContent> collection,
-        IServiceProvider serviceProvider,
         IContentService contentService,
         IOptions<OrganizerSettings> options) :
-        base(
-            collection,
-            serviceProvider)
+        base(collection)
     {
         _contentService = contentService;
         _options = options;

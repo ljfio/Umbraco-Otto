@@ -7,7 +7,7 @@ using Umbraco.Cms.Core.Models;
 namespace Our.Umbraco.Otto.Core.Organizers;
 
 public class OrganizerCollectionBuilder<TEntity> : 
-    TypeCollectionBuilderBase<
+    SetCollectionBuilderBase<
         OrganizerCollectionBuilder<TEntity>, 
         OrganizerCollection<TEntity>,
         IOrganizer<TEntity>>

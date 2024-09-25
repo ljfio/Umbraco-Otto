@@ -17,12 +17,9 @@ public class MediaOrganizerSelector : OrganizerSelectorBase<IMedia>
 
     public MediaOrganizerSelector(
         OrganizerCollection<IMedia> collection,
-        IServiceProvider serviceProvider,
         IMediaService mediaService,
         IOptions<OrganizerSettings> options) :
-        base(
-            collection,
-            serviceProvider)
+        base(collection)
     {
         _mediaService = mediaService;
         _options = options;

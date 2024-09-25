@@ -17,18 +17,10 @@ public abstract class OrganizerSelectorBase<TEntity> : IOrganizerSelector<TEntit
     where TEntity : class, IContentBase
 {
     private readonly OrganizerCollection<TEntity> _collection;
-    private readonly IServiceProvider _serviceProvider;
 
-    private readonly IDictionary<string, IOrganizer<TEntity>> _organizerCache;
-
-    public OrganizerSelectorBase(
-        OrganizerCollection<TEntity> collection,
-        IServiceProvider serviceProvider)
+    public OrganizerSelectorBase(OrganizerCollection<TEntity> collection)
     {
         _collection = collection;
-        _serviceProvider = serviceProvider;
-
-        _organizerCache = new Dictionary<string, IOrganizer<TEntity>>();
     }
 
     public void Organize(IEnumerable<TEntity> entities, OrganizerMode mode)
@@ -39,7 +31,7 @@ public abstract class OrganizerSelectorBase<TEntity> : IOrganizerSelector<TEntit
         {
             var rule = grouping.Key;
 
-            var organizer = GetOrganizer(rule.Organizer);
+            var organizer = _collection.FindOrganizerByName(rule.Organizer);
 
             if (organizer is null)
                 continue;
@@ -116,29 +108,4 @@ public abstract class OrganizerSelectorBase<TEntity> : IOrganizerSelector<TEntit
     protected abstract IEnumerable<IOrganizerRule> GetRules();
 
     protected abstract TEntity? GetParent(TEntity entity);
-
-    private IOrganizer<TEntity>? GetOrganizer(string name)
-    {
-        // Search for organizer in the cache
-        if (_organizerCache.TryGetValue(name, out var cached))
-            return cached;
-
-        // Locate the organizer based on the name
-        var type = _collection.FindOrganizerByName(name);
-
-        if (type is null)
-            return null;
-
-        // Activate organizer using the service provider
-        var organizer = ActivatorUtilities.GetServiceOrCreateInstance(_serviceProvider, type)
-            as IOrganizer<TEntity>;
-
-        if (organizer is null)
-            return null;
-
-        // Add the organizer to the cache
-        _organizerCache.Add(name, organizer);
-
-        return organizer;
-    }
 }

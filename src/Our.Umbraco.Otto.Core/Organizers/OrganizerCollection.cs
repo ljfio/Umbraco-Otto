@@ -8,14 +8,20 @@ using Umbraco.Extensions;
 
 namespace Our.Umbraco.Otto.Core.Organizers;
 
-public class OrganizerCollection<TEntity> : BuilderCollectionBase<Type>
+public class OrganizerCollection<TEntity> : BuilderCollectionBase<IOrganizer<TEntity>>
     where TEntity : class, IContentBase
 {
-    public OrganizerCollection(Func<IEnumerable<Type>> items) : base(items)
+    public OrganizerCollection(Func<IEnumerable<IOrganizer<TEntity>>> items) : base(items)
     {
     }
 
-    public Type? FindOrganizerByName(string name) => this
-        .FirstOrDefault(type => type.HasCustomAttribute<OrganizerAttribute>(false) &&
-                                type.GetCustomAttribute<OrganizerAttribute>()?.Name == name);
+    public IOrganizer<TEntity>? FindOrganizerByName(string name) => this
+        .FirstOrDefault(organizer => Matches(organizer, name));
+
+    private static bool Matches(IOrganizer<TEntity> organizer, string name)
+    {
+        var type = organizer.GetType();
+        return type.HasCustomAttribute<OrganizerAttribute>(false) &&
+               type.GetCustomAttribute<OrganizerAttribute>()?.Name == name;
+    }
 }
