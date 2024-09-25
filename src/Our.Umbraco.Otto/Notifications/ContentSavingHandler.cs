@@ -9,12 +9,12 @@ using Umbraco.Cms.Core.Notifications;
 
 namespace Our.Umbraco.Otto.Notifications;
 
-public class ContentDeletedHandler : INotificationHandler<ContentDeletedNotification>
+public class ContentSavingHandler : INotificationHandler<ContentSavingNotification>
 {
     private readonly IOrganizerSelector<IContent> _selector;
 
-    public ContentDeletedHandler(IOrganizerSelector<IContent> selector) => _selector = selector;
+    public ContentSavingHandler(IOrganizerSelector<IContent> selector) => _selector = selector;
 
-    public void Handle(ContentDeletedNotification notification) => 
-        _selector.Organize(notification.DeletedEntities, OrganizerMode.Cleanup);
+    public void Handle(ContentSavingNotification notification) => 
+        _selector.Organize(notification.SavedEntities, OrganizerMode.Organize);
 }

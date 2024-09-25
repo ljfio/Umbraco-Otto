@@ -67,8 +67,6 @@ public abstract class TaxonomyOrganizer<TEntity> : IOrganizer<TaxonomyOrganizerR
                     if (matching.Id != entity.ParentId)
                     {
                         entity.SetParent(matching);
-                        
-                        _organizerService.Save(entity);
                     }
                 }
                 else
@@ -79,8 +77,6 @@ public abstract class TaxonomyOrganizer<TEntity> : IOrganizer<TaxonomyOrganizerR
                     _organizerService.Save(folder);
 
                     entity.SetParent(folder);
-
-                    _organizerService.Save(entity);
                 }
             }
         }
@@ -98,20 +94,22 @@ public abstract class TaxonomyOrganizer<TEntity> : IOrganizer<TaxonomyOrganizerR
                 continue;
 
             var entity = match.Entity;
-
-            // Get all folders
-            var folders = _organizerService.GetFolders(entity.ParentId, rule.FolderType);
-
-            var tag = entity.HasProperty(rule.PropertyAlias) ? entity.GetValue(rule.PropertyAlias)?.ToString() : null;
-
-            if (string.IsNullOrEmpty(tag))
+            
+            // Get the root folder
+            var root = _organizerService.GetRoot(entity, rule.ParentTypes);
+            
+            if (root is null)
                 continue;
 
-            var matching = folders.FirstOrDefault(folder => tag.Equals(folder.Name));
+            // Get all organising folders
+            var folders = _organizerService.GetFolders(root.Id, rule.FolderType);
 
-            // If the folder exists and there is no children, delete the folder
-            if (matching is not null && !_organizerService.HasChildren(matching.Id))
-                _organizerService.Delete(matching);
+            foreach (var folder in folders)
+            {
+                // If there is no children, delete the folder
+                if (!_organizerService.HasChildren(folder.Id))
+                    _organizerService.Delete(folder);
+            }
         }
 
         return OperationResult.Succeed(messages);
