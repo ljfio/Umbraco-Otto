@@ -1,18 +1,20 @@
-# Organizers for Umbraco
+# Otto - Auto Organizer for Umbraco
+
+Automatically organize your content and media into folder structures in the tree.
 
 ## Installing
 
 ```poweshell
-dotnet add Our.Umbraco.Organizers
+dotnet add Our.Umbraco.Otto
 ```
 
 ## Configuring
 
-To configure the Organizer package, update the Application Settings in your solution with the appropriate rules to use the appropriate organizational strategy for your use case.
+To configure the Organizer package, update the Application Settings in your solution with the appropriate rules to apply the appropriate organizer for your use case.
 
 ```json
 {
-  "Organizers": {
+  "Otto": {
     "Content": {
       "Rules": []
     },
@@ -23,15 +25,15 @@ To configure the Organizer package, update the Application Settings in your solu
 }
 ```
 
-## Rules / Strategies
+## Organizers
 
-Included with the package are the following strategies that can be used when building your rules.
+Included with the package are the following organizers that can be used.
 
 ### Alphabetical
 
 ```json
 {
-  "Strategy": "Alphabetical",
+  "Organizer": "Alphabetical",
   "PropertyAlias": "",
   "SortOrder": "Ascending",
   "ParentTypes": [],
@@ -45,7 +47,7 @@ Included with the package are the following strategies that can be used when bui
 
 ```json
 {
-  "Strategy": "Date",
+  "Organizer": "Date",
   "PropertyAlias": "",
   "DefaultSortOrder": "Ascending",
   "ParentTypes": [],
@@ -75,7 +77,7 @@ Included with the package are the following strategies that can be used when bui
 
 ```json
 {
-  "Strategy": "Taxonomy",
+  "Organizer": "Taxonomy",
   "PropertyAlias": "",
   "SortOrder": "Ascending",
   "ParentTypes": [],
@@ -87,9 +89,9 @@ Included with the package are the following strategies that can be used when bui
 ## Extending
 
 ```csharp
-builder.ContentOrganizerStrategies()
-    .Add<MyCustomContentStrategy>();
+builder.ContentOrganizer()
+    .Add<MyCustomContentOrganizer>();
 
-builder.MediaOrganizerStrategies()
-    .Add<MyCustomMediaStrategy>();
+builder.MediaOrganizer()
+    .Add<MyCustomMediaOrganizer>();
 ```

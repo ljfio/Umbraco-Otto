@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ContentTargetFolders>.</ContentTargetFolders>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Our.Umbraco.Otto</PackageId>
+    <Product>Our.Umbraco.Organizers</Product>
+    <Title>Our.Umbraco.Organizers</Title>
+    <Description>Organizers Package for Umbraco</Description>
+    <PackageTags>umbraco plugin package</PackageTags>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="13.5.1" />
+    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Our.Umbraco.Otto.Core\Our.Umbraco.Otto.Core.csproj" />
+  </ItemGroup>
+</Project>
