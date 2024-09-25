@@ -59,6 +59,9 @@ public interface IOrganizerService<TEntity>
     /// <returns></returns>
     TEntity? GetRoot(TEntity entity, IReadOnlyCollection<string> parentTypes)
     {
+        if (parentTypes.Contains(entity.ContentType.Alias))
+            return entity;
+        
         var parent = GetParent(entity);
 
         if (parent is null)
