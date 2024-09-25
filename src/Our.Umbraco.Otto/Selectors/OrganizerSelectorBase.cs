@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.Extensions.DependencyInjection;
 using Our.Umbraco.Otto.Core;
 using Our.Umbraco.Otto.Core.Organizers;
 using Our.Umbraco.Otto.Core.Rules;
@@ -76,13 +75,13 @@ public abstract class OrganizerSelectorBase<TEntity> : IOrganizerSelector<TEntit
     private bool TryFindMatchingRule(
         TEntity entity,
         OrganizerMode mode,
-        [NotNullWhen(true)] out IOrganizerRule? rule,
+        [NotNullWhen(true)]
+        out IOrganizerRule? rule,
         out MatchType matchType)
     {
         rule = null;
         matchType = MatchType.None;
         
-        // Locate the parent and its type
         var parent = GetParent(entity);
 
         if (parent is null)

@@ -92,9 +92,15 @@ public abstract class TaxonomyOrganizer<TEntity> : IOrganizer<TaxonomyOrganizerR
                 continue;
 
             var entity = match.Entity;
+            
+            // Get the original parent folder
+            var originalParent = _organizerService.GetOriginalParent(entity);
+            
+            if (originalParent is null)
+                continue;
 
             // Get the root folder
-            var root = _organizerService.GetRoot(entity, rule.ParentTypes);
+            var root = _organizerService.GetRoot(originalParent, rule.ParentTypes);
 
             if (root is null)
                 continue;

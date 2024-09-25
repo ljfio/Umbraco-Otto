@@ -84,4 +84,11 @@ public interface IOrganizerService<TEntity>
     /// <param name="id"></param>
     /// <returns></returns>
     bool HasChildren(int id);
+
+    /// <summary>
+    /// Locates the original parent prior to deletion
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns></returns>
+    TEntity? GetOriginalParent(TEntity entity);
 }

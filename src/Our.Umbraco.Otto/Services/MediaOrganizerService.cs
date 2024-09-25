@@ -12,13 +12,16 @@ public class MediaOrganizerService : IOrganizerService<IMedia>
 {
     private readonly IMediaService _mediaService;
     private readonly IEntityService _entityService;
+    private readonly IRelationService _relationService;
 
     public MediaOrganizerService(
         IMediaService mediaService,
-        IEntityService entityService)
+        IEntityService entityService, 
+        IRelationService relationService)
     {
         _mediaService = mediaService;
         _entityService = entityService;
+        _relationService = relationService;
     }
 
     /// <inheritdoc />
@@ -58,4 +61,17 @@ public class MediaOrganizerService : IOrganizerService<IMedia>
 
     /// <inheritdoc />
     public bool HasChildren(int id) => _mediaService.HasChildren(id);
+    
+    /// <inheritdoc />
+    public IMedia? GetOriginalParent(IMedia entity)
+    {
+        if (!entity.Trashed)
+            return null;
+        
+        var relation = _relationService
+            .GetByChild(entity, Constants.Conventions.RelationTypes.RelateParentMediaFolderOnDeleteAlias)
+            .FirstOrDefault();
+        
+        return relation is null ? null :  _mediaService.GetById(relation.ParentId);
+    }
 }

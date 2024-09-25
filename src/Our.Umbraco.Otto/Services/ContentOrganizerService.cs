@@ -9,13 +9,16 @@ public class ContentOrganizerService : IOrganizerService<IContent>
 {
     private readonly IContentService _contentService;
     private readonly IEntityService _entityService;
+    private readonly IRelationService _relationService;
 
     public ContentOrganizerService(
         IContentService contentService,
-        IEntityService entityService)
+        IEntityService entityService,
+        IRelationService relationService)
     {
         _contentService = contentService;
         _entityService = entityService;
+        _relationService = relationService;
     }
 
     /// <inheritdoc />
@@ -63,4 +66,14 @@ public class ContentOrganizerService : IOrganizerService<IContent>
     /// <inheritdoc />
     public bool HasChildren(int id) =>
         _contentService.HasChildren(id);
+
+    /// <inheritdoc />
+    public IContent? GetOriginalParent(IContent entity)
+    {
+        var relation = _relationService
+            .GetByChild(entity, Constants.Conventions.RelationTypes.RelateParentDocumentOnDeleteAlias)
+            .FirstOrDefault();
+        
+        return relation is null ? null :  _contentService.GetById(relation.ParentId);
+    }
 }
