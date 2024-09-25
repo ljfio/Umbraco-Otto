@@ -9,9 +9,9 @@ namespace Our.Umbraco.Otto.Core.Extensions;
 
 public static class UmbracoBuilderExtensions
 {
-    public static OrganizerCollectionBuilder<IContent> ContentOrganizerStrategies(this IUmbracoBuilder builder) =>
+    public static OrganizerCollectionBuilder<IContent> ContentOrganizers(this IUmbracoBuilder builder) =>
         builder.WithCollectionBuilder<OrganizerCollectionBuilder<IContent>>();
     
-    public static OrganizerCollectionBuilder<IMedia> MediaOrganizerStrategies(this IUmbracoBuilder builder) =>
+    public static OrganizerCollectionBuilder<IMedia> MediaOrganizers(this IUmbracoBuilder builder) =>
         builder.WithCollectionBuilder<OrganizerCollectionBuilder<IMedia>>();
 }

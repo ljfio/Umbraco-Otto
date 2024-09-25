@@ -19,7 +19,7 @@ public abstract class OrganizerSelectorBase<TEntity> : IOrganizerSelector<TEntit
     private readonly OrganizerCollection<TEntity> _collection;
     private readonly IServiceProvider _serviceProvider;
 
-    private readonly IDictionary<string, IOrganizer<TEntity>> _organizers;
+    private readonly IDictionary<string, IOrganizer<TEntity>> _organizerCache;
 
     public OrganizerSelectorBase(
         OrganizerCollection<TEntity> collection,
@@ -28,7 +28,7 @@ public abstract class OrganizerSelectorBase<TEntity> : IOrganizerSelector<TEntit
         _collection = collection;
         _serviceProvider = serviceProvider;
 
-        _organizers = new Dictionary<string, IOrganizer<TEntity>>();
+        _organizerCache = new Dictionary<string, IOrganizer<TEntity>>();
     }
 
     public void Organize(IEnumerable<TEntity> entities, OrganizerMode mode)
@@ -39,12 +39,12 @@ public abstract class OrganizerSelectorBase<TEntity> : IOrganizerSelector<TEntit
         {
             var rule = grouping.Key;
 
-            var strategy = GetStrategy(rule.Organizer);
+            var organizer = GetOrganizer(rule.Organizer);
 
-            if (strategy is null)
+            if (organizer is null)
                 continue;
 
-            var result = RunStrategy(strategy, rule, grouping.Value, mode);
+            var result = RunOrganizer(organizer, rule, grouping.Value, mode);
         }
     }
 
@@ -70,7 +70,7 @@ public abstract class OrganizerSelectorBase<TEntity> : IOrganizerSelector<TEntit
         return groups;
     }
 
-    private OperationResult RunStrategy(
+    private OperationResult RunOrganizer(
         IOrganizer<TEntity> strategy,
         IOrganizerRule rule,
         IEnumerable<Match<TEntity>> matches,
@@ -117,28 +117,28 @@ public abstract class OrganizerSelectorBase<TEntity> : IOrganizerSelector<TEntit
 
     protected abstract TEntity? GetParent(TEntity entity);
 
-    private IOrganizer<TEntity>? GetStrategy(string name)
+    private IOrganizer<TEntity>? GetOrganizer(string name)
     {
-        // Search for strategy in the cache
-        if (_organizers.TryGetValue(name, out var cachedStrategy))
-            return cachedStrategy;
+        // Search for organizer in the cache
+        if (_organizerCache.TryGetValue(name, out var cached))
+            return cached;
 
-        // Locate the strategy based on the name
-        var strategyType = _collection.FindOrganizerByName(name);
+        // Locate the organizer based on the name
+        var type = _collection.FindOrganizerByName(name);
 
-        if (strategyType is null)
+        if (type is null)
             return null;
 
-        // Activate strategy using the service provider
-        var strategy = ActivatorUtilities.GetServiceOrCreateInstance(_serviceProvider, strategyType)
+        // Activate organizer using the service provider
+        var organizer = ActivatorUtilities.GetServiceOrCreateInstance(_serviceProvider, type)
             as IOrganizer<TEntity>;
 
-        if (strategy is null)
+        if (organizer is null)
             return null;
 
-        // Add the strategy to the cache
-        _organizers.Add(name, strategy);
+        // Add the organizer to the cache
+        _organizerCache.Add(name, organizer);
 
-        return strategy;
+        return organizer;
     }
 }

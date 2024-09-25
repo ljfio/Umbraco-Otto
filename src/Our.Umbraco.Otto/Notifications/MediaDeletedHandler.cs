@@ -11,10 +11,10 @@ namespace Our.Umbraco.Otto.Notifications;
 
 public class MediaDeletedHandler : INotificationHandler<MediaDeletedNotification>
 {
-    private readonly IOrganizerSelector<IMedia> _organizerSelector;
+    private readonly IOrganizerSelector<IMedia> _selector;
 
-    public MediaDeletedHandler(IOrganizerSelector<IMedia> organizerSelector) => _organizerSelector = organizerSelector;
+    public MediaDeletedHandler(IOrganizerSelector<IMedia> selector) => _selector = selector;
 
     public void Handle(MediaDeletedNotification notification) =>
-        _organizerSelector.Organize(notification.DeletedEntities, OrganizerMode.Cleanup);
+        _selector.Organize(notification.DeletedEntities, OrganizerMode.Cleanup);
 }

@@ -11,10 +11,10 @@ namespace Our.Umbraco.Otto.Notifications;
 
 public class ContentDeletedHandler : INotificationHandler<ContentDeletedNotification>
 {
-    private readonly IOrganizerSelector<IContent> _organizerSelector;
+    private readonly IOrganizerSelector<IContent> _selector;
 
-    public ContentDeletedHandler(IOrganizerSelector<IContent> organizerSelector) => _organizerSelector = organizerSelector;
+    public ContentDeletedHandler(IOrganizerSelector<IContent> selector) => _selector = selector;
 
     public void Handle(ContentDeletedNotification notification) => 
-        _organizerSelector.Organize(notification.DeletedEntities, OrganizerMode.Cleanup);
+        _selector.Organize(notification.DeletedEntities, OrganizerMode.Cleanup);
 }

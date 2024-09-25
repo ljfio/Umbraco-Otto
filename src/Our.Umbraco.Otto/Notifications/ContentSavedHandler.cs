@@ -11,10 +11,10 @@ namespace Our.Umbraco.Otto.Notifications;
 
 public class ContentSavedHandler : INotificationHandler<ContentSavedNotification>
 {
-    private readonly IOrganizerSelector<IContent> _organizerSelector;
+    private readonly IOrganizerSelector<IContent> _selector;
 
-    public ContentSavedHandler(IOrganizerSelector<IContent> organizerSelector) => _organizerSelector = organizerSelector;
+    public ContentSavedHandler(IOrganizerSelector<IContent> selector) => _selector = selector;
 
     public void Handle(ContentSavedNotification notification) => 
-        _organizerSelector.Organize(notification.SavedEntities, OrganizerMode.Organize);
+        _selector.Organize(notification.SavedEntities, OrganizerMode.Organize);
 }

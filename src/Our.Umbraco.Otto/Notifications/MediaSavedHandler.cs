@@ -11,10 +11,10 @@ namespace Our.Umbraco.Otto.Notifications;
 
 public class MediaSavedHandler : INotificationHandler<MediaSavedNotification>
 {
-    private readonly IOrganizerSelector<IMedia> _organizerSelector;
+    private readonly IOrganizerSelector<IMedia> _selector;
 
-    public MediaSavedHandler(IOrganizerSelector<IMedia> organizerSelector) => _organizerSelector = organizerSelector;
+    public MediaSavedHandler(IOrganizerSelector<IMedia> selector) => _selector = selector;
 
     public void Handle(MediaSavedNotification notification) => 
-        _organizerSelector.Organize(notification.SavedEntities, OrganizerMode.Organize);
+        _selector.Organize(notification.SavedEntities, OrganizerMode.Organize);
 }

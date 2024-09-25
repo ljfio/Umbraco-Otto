@@ -43,10 +43,10 @@ public class PackageComposer : IComposer
             .AddNotificationHandler<MediaDeletedNotification, MediaDeletedHandler>()
             .AddNotificationHandler<MediaMovedToRecycleBinNotification, MediaMovedToRecycleBinHandler>();
 
-        builder.MediaOrganizerStrategies()
+        builder.MediaOrganizers()
             .Add<TaxonomyMediaOrganizer>();
         
-        builder.ContentOrganizerStrategies()
+        builder.ContentOrganizers()
             .Add<TaxonomyContentOrganizer>();
     }
 }
