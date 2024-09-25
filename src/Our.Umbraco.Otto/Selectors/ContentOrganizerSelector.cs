@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Our.Umbraco.Otto.Core.Config;
 using Our.Umbraco.Otto.Core.Organizers;
 using Our.Umbraco.Otto.Core.Rules;
+using Our.Umbraco.Otto.Core.Services;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 
@@ -12,20 +13,22 @@ namespace Our.Umbraco.Otto.Selectors;
 
 public class ContentOrganizerSelector : OrganizerSelectorBase<IContent>
 {
-    private readonly IContentService _contentService;
+    private readonly IOrganizerService<IContent> _organizerService;
     private readonly IOptions<OrganizerSettings> _options;
 
     public ContentOrganizerSelector(
         OrganizerCollection<IContent> collection,
-        IContentService contentService,
+        IOrganizerService<IContent> organizerService,
         IOptions<OrganizerSettings> options) :
         base(collection)
     {
-        _contentService = contentService;
+        _organizerService = organizerService;
         _options = options;
     }
 
     protected override IEnumerable<IOrganizerRule> GetRules() => _options.Value.Content.Rules;
 
-    protected override IContent? GetParent(IContent entity) => _contentService.GetParent(entity);
+    protected override IContent? GetParent(IContent entity) => entity.Trashed
+        ? _organizerService.GetOriginalParent(entity)
+        : _organizerService.GetParent(entity);
 }

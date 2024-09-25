@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Our.Umbraco.Otto.Core.Config;
 using Our.Umbraco.Otto.Core.Organizers;
 using Our.Umbraco.Otto.Core.Rules;
+using Our.Umbraco.Otto.Core.Services;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 
@@ -12,20 +13,22 @@ namespace Our.Umbraco.Otto.Selectors;
 
 public class MediaOrganizerSelector : OrganizerSelectorBase<IMedia>
 {
-    private readonly IMediaService _mediaService;
+    private readonly IOrganizerService<IMedia> _organizerService;
     private readonly IOptions<OrganizerSettings> _options;
 
     public MediaOrganizerSelector(
         OrganizerCollection<IMedia> collection,
-        IMediaService mediaService,
+        IOrganizerService<IMedia> organizerService,
         IOptions<OrganizerSettings> options) :
         base(collection)
     {
-        _mediaService = mediaService;
+        _organizerService = organizerService;
         _options = options;
     }
 
     protected override IEnumerable<IOrganizerRule> GetRules() => _options.Value.Media.Rules;
 
-    protected override IMedia? GetParent(IMedia entity) => _mediaService.GetParent(entity);
+    protected override IMedia? GetParent(IMedia entity) => entity.Trashed
+        ? _organizerService.GetOriginalParent(entity)
+        : _organizerService.GetParent(entity);
 }
