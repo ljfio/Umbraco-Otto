@@ -72,7 +72,7 @@ public abstract class TaxonomyOrganizer<TEntity> : IOrganizer<TaxonomyOrganizerR
                     // Create the folder if it does not exist
                     var folder = _organizerService.CreateFolder(tag, root.Id, rule.FolderType);
 
-                    _organizerService.Save(folder);
+                    _organizerService.Save(folder, entity is IContent { Published: true });
 
                     entity.SetParent(folder);
                 }

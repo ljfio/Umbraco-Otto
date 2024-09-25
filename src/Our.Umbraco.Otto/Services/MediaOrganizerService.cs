@@ -22,7 +22,7 @@ public class MediaOrganizerService : IOrganizerService<IMedia>
     }
 
     /// <inheritdoc />
-    public void Save(IMedia entity) => _mediaService.Save(entity);
+    public void Save(IMedia entity, bool publish = false) => _mediaService.Save(entity);
 
     /// <inheritdoc />
     public void Delete(IMedia entity) => _mediaService.Delete(entity);

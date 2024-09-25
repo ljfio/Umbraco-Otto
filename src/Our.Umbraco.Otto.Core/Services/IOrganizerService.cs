@@ -11,7 +11,8 @@ public interface IOrganizerService<TEntity>
     /// Saves the item using the correct service
     /// </summary>
     /// <param name="entity"></param>
-    void Save(TEntity entity);
+    /// <param name="publish"></param>
+    void Save(TEntity entity, bool publish = false);
     
     /// <summary>
     /// Deletes the item using the correct service

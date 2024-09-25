@@ -19,9 +19,9 @@ public class ContentOrganizerService : IOrganizerService<IContent>
     }
 
     /// <inheritdoc />
-    public void Save(IContent entity)
+    public void Save(IContent entity, bool publish = false)
     {
-        if (entity.Published)
+        if (entity.Published || publish)
             _contentService.SaveAndPublish(entity);
         else
             _contentService.Save(entity);
