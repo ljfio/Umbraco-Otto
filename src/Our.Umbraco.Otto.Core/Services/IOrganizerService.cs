@@ -1,4 +1,6 @@
+using System.Collections;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Extensions;
 
 namespace Our.Umbraco.Otto.Core.Services;
 
@@ -59,6 +61,14 @@ public interface IOrganizerService<TEntity>
 
         return GetRoot(parent, parentTypes);
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <param name="propertyAlias"></param>
+    /// <returns></returns>
+    string? GetValue(TEntity entity, string propertyAlias);
     
     /// <summary>
     /// Checks if the item has children

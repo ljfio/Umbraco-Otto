@@ -33,9 +33,7 @@ public abstract class TaxonomyOrganizer<TEntity> : IOrganizer<TaxonomyOrganizerR
             if (match.MatchType == MatchType.Entity)
             {
                 // Get the tag from the entity using the property alias
-                var tag = entity.HasProperty(rule.PropertyAlias)
-                    ? entity.GetValue(rule.PropertyAlias)?.ToString()
-                    : null;
+                var tag = _organizerService.GetValue(entity, rule.PropertyAlias);
 
                 if (string.IsNullOrEmpty(tag))
                     continue;
@@ -45,17 +43,17 @@ public abstract class TaxonomyOrganizer<TEntity> : IOrganizer<TaxonomyOrganizerR
 
                 if (parent is null)
                     continue;
-                
+
                 if (rule.FolderType.Contains(parent.ContentType.Alias) &&
                     tag.Equals(parent.Name))
                     continue;
-                
+
                 // Locate the root
                 var root = _organizerService.GetRoot(entity, rule.ParentTypes);
-                
+
                 if (root is null)
                     continue;
-                
+
                 // Get all folders
                 var folders = _organizerService.GetFolders(root.Id, rule.FolderType);
 
@@ -94,10 +92,10 @@ public abstract class TaxonomyOrganizer<TEntity> : IOrganizer<TaxonomyOrganizerR
                 continue;
 
             var entity = match.Entity;
-            
+
             // Get the root folder
             var root = _organizerService.GetRoot(entity, rule.ParentTypes);
-            
+
             if (root is null)
                 continue;
 
