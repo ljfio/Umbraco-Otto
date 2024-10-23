@@ -10,7 +10,9 @@ namespace Our.Umbraco.Otto.Rules;
 
 public class DateOrganizerRule : IOrganizerRule
 {
-    public string Organizer { get; set; } = string.Empty;
+    public const string OrganizerName = "Date";
+
+    public string Organizer => OrganizerName;
 
     public string PropertyAlias { get; set; } = string.Empty;
 

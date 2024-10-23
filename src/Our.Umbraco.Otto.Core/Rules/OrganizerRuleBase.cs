@@ -4,7 +4,7 @@ namespace Our.Umbraco.Otto.Core.Rules;
 
 public abstract class OrganizerRuleBase : IOrganizerRule
 {
-    public string Organizer { get; set; } = string.Empty;
+    public abstract string Organizer { get; }
 
     public string PropertyAlias { get; set; } = string.Empty;
 

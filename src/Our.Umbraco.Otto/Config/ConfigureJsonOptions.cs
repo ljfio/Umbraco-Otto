@@ -23,12 +23,12 @@ public class ConfigureJsonOptions : IConfigureOptions<JsonOptions>
                 // TODO Dynamic polymorphic types
                 info.PolymorphismOptions = new()
                 {
-                    TypeDiscriminatorPropertyName = "Strategy",
+                    TypeDiscriminatorPropertyName = nameof(IOrganizerRule.Organizer),
                     DerivedTypes =
                     {
-                        new(typeof(AlphabeticalOrganizerRule), "Alphabetical"),
-                        new(typeof(DateOrganizerRule), "Date"),
-                        new(typeof(TaxonomyOrganizerRule), "Taxonomy"),
+                        new(typeof(AlphabeticalOrganizerRule), AlphabeticalOrganizerRule.OrganizerName),
+                        new(typeof(DateOrganizerRule), DateOrganizerRule.OrganizerName),
+                        new(typeof(TaxonomyOrganizerRule), TaxonomyOrganizerRule.OrganizerName),
                     }
                 };
             });
