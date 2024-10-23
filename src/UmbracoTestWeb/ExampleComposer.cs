@@ -44,13 +44,19 @@ public class ExampleComposer : IComposer
                     Year =
                     {
                         FolderType = EventYear.ModelTypeAlias,
+                        Format = "YYYY",
                         CreateFolder = true,
                     },
                     Month =
                     {
                         FolderType = EventMonth.ModelTypeAlias,
+                        Format = "MM",
                         CreateFolder = true,
                     },
+                    Day =
+                    {
+                        CreateFolder = false,
+                    }
                 },
             ];
         });
