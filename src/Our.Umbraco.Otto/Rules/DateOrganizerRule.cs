@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 using Our.Umbraco.Otto.Core;
+using Our.Umbraco.Otto.Core.Extensions;
 using Our.Umbraco.Otto.Core.Rules;
 using Umbraco.Cms.Core.Models;
 using MatchType = Our.Umbraco.Otto.Core.MatchType;
@@ -18,20 +19,20 @@ public class DateOrganizerRule : IOrganizerRule
 
     public SortOrder DefaultSortOrder { get; set; }
 
-    public IEnumerable<string> ParentTypes { get; set; } = [];
+    public IReadOnlyCollection<string> ParentTypes { get; set; } = [];
 
-    public IEnumerable<string> ItemTypes { get; set; } = [];
-    
+    public IReadOnlyCollection<string> ItemTypes { get; set; } = [];
+
     public PeriodOptions Day { get; set; } = new()
     {
         Format = "dd",
     };
-    
+
     public PeriodOptions Month { get; set; } = new()
     {
         Format = "MM",
     };
-    
+
     public PeriodOptions Year { get; set; } = new()
     {
         Format = "YYYY",
@@ -42,14 +43,37 @@ public class DateOrganizerRule : IOrganizerRule
         public string Format { get; set; } = string.Empty;
 
         public string FolderType { get; set; } = string.Empty;
-        
+
         public bool CreateFolder { get; set; } = true;
 
         public SortOrder SortOrder { get; set; }
     }
-    
+
     public MatchType Matches(IContentBase entity, IContentBase parent, OrganizerMode mode)
     {
-        throw new NotImplementedException();
+        if (IsItemType(entity) && IsParentOrFolder(parent))
+            return MatchType.Entity;
+
+        if (IsParent(entity))
+            return MatchType.Parent;
+
+        if (IsFolder(entity))
+            return MatchType.Folder;
+
+        return MatchType.None;
     }
+
+    private bool IsItemType(IContentBase entity) =>
+        !ItemTypes.Any() || entity.HasContentType(ItemTypes);
+
+    private bool IsParentOrFolder(IContentBase entity) =>
+        IsParent(entity) || IsFolder(entity);
+
+    private bool IsParent(IContentBase entity) =>
+        entity.HasContentType(ParentTypes);
+
+    private bool IsFolder(IContentBase entity) =>
+        entity.HasContentType(Day.FolderType) ||
+        entity.HasContentType(Month.FolderType) ||
+        entity.HasContentType(Year.FolderType);
 }
