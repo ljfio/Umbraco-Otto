@@ -15,6 +15,10 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="MinVer" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Umbraco.Cms.Web.Website" Version="13.5.1" />
     <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.5.1" />
   </ItemGroup>
