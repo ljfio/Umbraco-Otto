@@ -5,5 +5,5 @@ namespace Our.Umbraco.Otto;
 
 internal static class PackageConstants
 {
-    public const string PackageName = "Organizers";
+    public const string PackageName = "Otto";
 }
