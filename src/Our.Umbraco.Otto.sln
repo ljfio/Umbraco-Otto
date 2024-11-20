@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repository", "Repository", 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Our.Umbraco.Otto.Tests.Integration", "Our.Umbraco.Otto.Tests.Integration\Our.Umbraco.Otto.Tests.Integration.csproj", "{E4FD75E8-82FA-48C4-A55E-68641C4ADAEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,10 +41,15 @@ Global
 		{FC0593D8-A25D-4150-99D8-A4A399A72690}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC0593D8-A25D-4150-99D8-A4A399A72690}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC0593D8-A25D-4150-99D8-A4A399A72690}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4FD75E8-82FA-48C4-A55E-68641C4ADAEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4FD75E8-82FA-48C4-A55E-68641C4ADAEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4FD75E8-82FA-48C4-A55E-68641C4ADAEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4FD75E8-82FA-48C4-A55E-68641C4ADAEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EE88C15D-21AA-4873-96B6-70459EA170F2} = {4B206237-E8BF-49EF-BE3E-BF56C9EA510C}
 		{48DC07AD-030A-42AA-B123-9257CD9D7807} = {4B206237-E8BF-49EF-BE3E-BF56C9EA510C}
 		{FC0593D8-A25D-4150-99D8-A4A399A72690} = {A053F714-BF76-4F8B-81C8-76C9CA4B53BE}
+		{E4FD75E8-82FA-48C4-A55E-68641C4ADAEC} = {A053F714-BF76-4F8B-81C8-76C9CA4B53BE}
 	EndGlobalSection
 EndGlobal
