@@ -3,12 +3,12 @@
 
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using Our.Umbraco.Otto.Core.Config;
-using Our.Umbraco.Otto.Rules;
 using Our.Umbraco.Otto.Tests.Integration.Core;
 using Umbraco.Cms.Core;
+using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 using UmbracoTestWeb.Models;
+using ModelsTag = UmbracoTestWeb.Models.Tag;
 
 namespace Our.Umbraco.Otto.Tests.Integration.Organizers;
 
@@ -53,38 +53,54 @@ public class TaxonomyOrganizerTests : IDisposable
     public void ShouldOrganizeEntityInFolder()
     {
         var contentService = _services.GetRequiredService<IContentService>();
-        
+
+        var (tag, blog) = CreateBaseSite(contentService);
+
+        var articleContent = contentService.Create("Article", blog.Id, Article.ModelTypeAlias);
+        articleContent.SetValue("tag", tag.GetUdi());
+
+        contentService.SaveAndPublish(articleContent)
+            .Should()
+            .Match<PublishResult>(v => v.Success);
+
+        var category = contentService.GetParent(articleContent.Id);
+
+        category.Should()
+            .Match<IContent>(v => v.ContentType.Alias == BlogCategory.ModelTypeAlias)
+            .And
+            .Match<IContent>(v => v.ParentId == blog.Id)
+            .And
+            .Match<IContent>(v => string.Equals(v.Name, tag.Name, StringComparison.CurrentCulture));
+    }
+
+    private (IContent Tag, IContent Blog) CreateBaseSite(IContentService contentService)
+    {
         var homeContent = contentService.Create("Home", Constants.System.Root, Home.ModelTypeAlias);
         contentService.SaveAndPublish(homeContent)
             .Should()
             .Match<PublishResult>(v => v.Success);
-        
+
         var sharedContent = contentService.Create("Shared", Constants.System.Root, Shared.ModelTypeAlias);
         contentService.SaveAndPublish(sharedContent)
             .Should()
             .Match<PublishResult>(v => v.Success);
-        
+
         var tagGroupContent = contentService.Create("Tags", sharedContent.Id, TagGroup.ModelTypeAlias);
         contentService.SaveAndPublish(tagGroupContent)
             .Should()
             .Match<PublishResult>(v => v.Success);
-        
-        var exampleTagContent = contentService.Create("Example", sharedContent.Id, Tag.ModelTypeAlias);
+
+        var exampleTagContent = contentService.Create("Example", sharedContent.Id, ModelsTag.ModelTypeAlias);
         contentService.SaveAndPublish(exampleTagContent)
             .Should()
             .Match<PublishResult>(v => v.Success);
-        
+
         var blogContent = contentService.Create("Blog", homeContent.Id, Blog.ModelTypeAlias);
         contentService.SaveAndPublish(blogContent)
             .Should()
             .Match<PublishResult>(v => v.Success);
-        
-        var articleContent = contentService.Create("Article", blogContent.Id, Article.ModelTypeAlias);
-        articleContent.SetValue("tag", exampleTagContent.GetUdi());
-        
-        contentService.SaveAndPublish(articleContent)
-            .Should()
-            .Match<PublishResult>(v => v.Success);
+
+        return (exampleTagContent, blogContent);
     }
 
     public void Dispose()
