@@ -16,7 +16,7 @@ public class MediaOrganizerService : IOrganizerService<IMedia>
 
     public MediaOrganizerService(
         IMediaService mediaService,
-        IEntityService entityService, 
+        IEntityService entityService,
         IRelationService relationService)
     {
         _mediaService = mediaService;
@@ -38,7 +38,7 @@ public class MediaOrganizerService : IOrganizerService<IMedia>
         _mediaService.CreateMedia(name, parentId, folderType);
 
     /// <inheritdoc />
-    public IEnumerable<IMedia> GetFolders(int id, string folderType) => 
+    public IEnumerable<IMedia> GetFolders(int id, string folderType) =>
         _mediaService.GetPagedChildren(id, 0, 100, out _);
 
     /// <inheritdoc />
@@ -49,29 +49,29 @@ public class MediaOrganizerService : IOrganizerService<IMedia>
     {
         if (!entity.HasProperty(propertyAlias))
             return null;
-        
+
         var value = entity.GetValue(propertyAlias);
-        
-        if (value is string stringValue && 
+
+        if (value is string stringValue &&
             UdiParser.TryParse(stringValue, out GuidUdi? udi))
             return _entityService.Get(udi.Guid)?.Name;
-        
+
         return value?.ToString();
     }
 
     /// <inheritdoc />
     public bool HasChildren(int id) => _mediaService.HasChildren(id);
-    
+
     /// <inheritdoc />
     public IMedia? GetOriginalParent(IMedia entity)
     {
         if (!entity.Trashed)
-            return null;
-        
+            return _mediaService.GetById(entity.ParentId);
+
         var relation = _relationService
             .GetByChild(entity, Constants.Conventions.RelationTypes.RelateParentMediaFolderOnDeleteAlias)
             .FirstOrDefault();
-        
-        return relation is null ? null :  _mediaService.GetById(relation.ParentId);
+
+        return relation is null ? null : _mediaService.GetById(relation.ParentId);
     }
 }

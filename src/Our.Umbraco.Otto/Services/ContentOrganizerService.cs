@@ -1,3 +1,4 @@
+using J2N.Numerics;
 using Our.Umbraco.Otto.Core.Services;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;
@@ -29,7 +30,7 @@ public class ContentOrganizerService : IOrganizerService<IContent>
         else
             _contentService.Save(entity);
     }
-    
+
     /// <inheritdoc />
     public void Move(IContent entity, int parentId) => _contentService.Move(entity, parentId);
 
@@ -53,13 +54,13 @@ public class ContentOrganizerService : IOrganizerService<IContent>
     {
         if (!entity.HasProperty(propertyAlias))
             return null;
-        
+
         var value = entity.GetValue(propertyAlias);
-        
-        if (value is string stringValue && 
+
+        if (value is string stringValue &&
             UdiParser.TryParse(stringValue, out GuidUdi? udi))
             return _entityService.Get(udi.Guid)?.Name;
-        
+
         return value?.ToString();
     }
 
@@ -70,10 +71,13 @@ public class ContentOrganizerService : IOrganizerService<IContent>
     /// <inheritdoc />
     public IContent? GetOriginalParent(IContent entity)
     {
+        if (!entity.Trashed)
+            return _contentService.GetById(entity.ParentId);
+
         var relation = _relationService
             .GetByChild(entity, Constants.Conventions.RelationTypes.RelateParentDocumentOnDeleteAlias)
             .FirstOrDefault();
-        
-        return relation is null ? null :  _contentService.GetById(relation.ParentId);
+
+        return relation is null ? null : _contentService.GetById(relation.ParentId);
     }
 }

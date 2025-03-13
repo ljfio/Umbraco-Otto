@@ -5,7 +5,7 @@ using Umbraco.Cms.Core.Models;
 
 namespace Our.Umbraco.Otto.Core.Extensions;
 
-public static  class ContentExtensions
+public static class ContentExtensions
 {
     /// <summary>
     /// Checks if the content type of <paramref name="entity"/> matches one of the <paramref name="aliases"/>
@@ -14,8 +14,8 @@ public static  class ContentExtensions
     /// <param name="aliases">content type aliases to compare</param>
     /// <returns></returns>
     public static bool HasContentType(this IContentBase entity, IReadOnlyCollection<string> aliases) =>
-        aliases.Contains(entity.ContentType.Alias); 
-    
+        aliases.Contains(entity.ContentType.Alias);
+
     /// <summary>
     /// Checks if the content type of <paramref name="entity"/> matches the <paramref name="alias"/>
     /// </summary>

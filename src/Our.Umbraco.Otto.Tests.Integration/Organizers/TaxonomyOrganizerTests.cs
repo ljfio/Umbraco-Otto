@@ -16,6 +16,7 @@ namespace Our.Umbraco.Otto.Tests.Integration.Organizers;
 public class TaxonomyOrganizerTests : IDisposable
 {
     private readonly IServiceProvider _services;
+    private readonly IContentService _contentService;
 
     public TaxonomyOrganizerTests(TestWebApplicationFactory factory)
     {
@@ -47,60 +48,82 @@ public class TaxonomyOrganizerTests : IDisposable
         // });
 
         _services = factory.Services;
+        _contentService = _services.GetRequiredService<IContentService>();
     }
 
     [Fact]
     public void ShouldOrganizeEntityInFolder()
     {
-        var contentService = _services.GetRequiredService<IContentService>();
+        var site = CreateBaseSite();
 
-        var (tag, blog) = CreateBaseSite(contentService);
+        var article = _contentService.Create("Article", site.Blog.Id, Article.ModelTypeAlias);
+        article.SetValue("tag", site.Tag.GetUdi());
 
-        var articleContent = contentService.Create("Article", blog.Id, Article.ModelTypeAlias);
-        articleContent.SetValue("tag", tag.GetUdi());
-
-        contentService.SaveAndPublish(articleContent)
+        _contentService.SaveAndPublish(article)
             .Should()
             .Match<PublishResult>(v => v.Success);
 
-        var category = contentService.GetParent(articleContent.Id);
+        // Check that the parent of this article is a blog category with expected name
+        var category = _contentService.GetParent(article.Id);
 
         category.Should()
-            .Match<IContent>(v => v.ContentType.Alias == BlogCategory.ModelTypeAlias)
+            .Match<IContent>(v => v.ContentType.Alias == BlogCategory.ModelTypeAlias, "it is a blog category")
             .And
-            .Match<IContent>(v => v.ParentId == blog.Id)
+            .Match<IContent>(v => v.ParentId == site.Blog.Id, "parent is the blog")
             .And
-            .Match<IContent>(v => string.Equals(v.Name, tag.Name, StringComparison.CurrentCulture));
+            .Match<IContent>(v => string.Equals(v.Name, site.Tag.Name, StringComparison.CurrentCulture), "it has the same name as the tag");
     }
 
-    private (IContent Tag, IContent Blog) CreateBaseSite(IContentService contentService)
+    [Fact]
+    public void ShouldCleanupOldCategories()
     {
-        var homeContent = contentService.Create("Home", Constants.System.Root, Home.ModelTypeAlias);
-        contentService.SaveAndPublish(homeContent)
+        var site = CreateBaseSite();
+
+        var category = CreateAndPublish("Childless", site.Blog.Id, BlogCategory.ModelTypeAlias);
+
+        var article = _contentService.Create("Article", site.Blog.Id, Article.ModelTypeAlias);
+        article.SetValue("tag", site.Tag.GetUdi());
+
+        _contentService.SaveAndPublish(article)
+            .Should()
+            .Match<PublishResult>(v => v.Success);
+        
+        int parentId = article.ParentId;
+        
+        _contentService.Delete(article)
+            .Should()
+            .Match<OperationResult>(v => v.Success);
+
+        _contentService.GetById(parentId)
+            .Should()
+            .BeNull();
+
+        _contentService.GetById(category.Id)
+            .Should()
+            .BeNull();
+    }
+
+    private BaseSite CreateBaseSite()
+    {
+        var home = CreateAndPublish("Home", Constants.System.Root, Home.ModelTypeAlias);
+        var blog = CreateAndPublish("Blog", home.Id, Blog.ModelTypeAlias);
+        
+        var shared = CreateAndPublish("Shared", Constants.System.Root, Shared.ModelTypeAlias);
+        var tagGroup = CreateAndPublish("Tags", shared.Id, TagGroup.ModelTypeAlias);
+        var tag = CreateAndPublish("Tag", shared.Id, ModelsTag.ModelTypeAlias);
+
+        return new BaseSite(home, blog, shared, tagGroup, tag);
+    }
+
+    private IContent CreateAndPublish(string name, int parentId, string documentTypeAlias)
+    {
+        var content = _contentService.Create(name, parentId, documentTypeAlias);
+
+        _contentService.SaveAndPublish(content)
             .Should()
             .Match<PublishResult>(v => v.Success);
 
-        var sharedContent = contentService.Create("Shared", Constants.System.Root, Shared.ModelTypeAlias);
-        contentService.SaveAndPublish(sharedContent)
-            .Should()
-            .Match<PublishResult>(v => v.Success);
-
-        var tagGroupContent = contentService.Create("Tags", sharedContent.Id, TagGroup.ModelTypeAlias);
-        contentService.SaveAndPublish(tagGroupContent)
-            .Should()
-            .Match<PublishResult>(v => v.Success);
-
-        var exampleTagContent = contentService.Create("Example", sharedContent.Id, ModelsTag.ModelTypeAlias);
-        contentService.SaveAndPublish(exampleTagContent)
-            .Should()
-            .Match<PublishResult>(v => v.Success);
-
-        var blogContent = contentService.Create("Blog", homeContent.Id, Blog.ModelTypeAlias);
-        contentService.SaveAndPublish(blogContent)
-            .Should()
-            .Match<PublishResult>(v => v.Success);
-
-        return (exampleTagContent, blogContent);
+        return content;
     }
 
     public void Dispose()
@@ -110,4 +133,6 @@ public class TaxonomyOrganizerTests : IDisposable
         foreach (var content in contentService.GetRootContent())
             contentService.Delete(content);
     }
+
+    private record BaseSite(IContent Home, IContent Blog, IContent Shared, IContent TagGroup, IContent Tag);
 }
