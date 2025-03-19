@@ -3,10 +3,11 @@
 
 using Our.Umbraco.Otto.Core.Organizers;
 using Our.Umbraco.Otto.Core.Services;
+using Our.Umbraco.Otto.Rules;
 using Umbraco.Cms.Core.Models;
 
 namespace Our.Umbraco.Otto.Organizers;
 
-[Organizer("Taxonomy")]
-public class TaxonomyContentOrganizer(IOrganizerService<IContent> organizerService) 
-    : TaxonomyOrganizer<IContent>(organizerService);
+[Organizer(TaxonomyOrganizerRule.OrganizerName)]
+public class MediaTaxonomyOrganizer(IOrganizerService<IMedia> organizerService) 
+    : TaxonomyOrganizer<IMedia>(organizerService);
